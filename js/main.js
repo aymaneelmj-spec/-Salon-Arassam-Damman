@@ -1,6 +1,57 @@
 (function () {
   'use strict';
 
+  // ── BACKGROUND AUDIO ON LOAD ──────────────────────────────
+  (function bgAudio() {
+    var audio = document.getElementById('bgAudio');
+    var toggleBtn = document.getElementById('soundToggle');
+    if (!audio || !toggleBtn) return;
+
+    var iconOn = toggleBtn.querySelector('.icon-sound-on');
+    var iconOff = toggleBtn.querySelector('.icon-sound-off');
+
+    function reflectState(isPlaying) {
+      toggleBtn.classList.toggle('is-muted', !isPlaying);
+      if (iconOn) iconOn.style.display = isPlaying ? '' : 'none';
+      if (iconOff) iconOff.style.display = isPlaying ? 'none' : '';
+    }
+
+    audio.volume = 0.55;
+
+    function tryAutoplay() {
+      var p = audio.play();
+      if (p && typeof p.then === 'function') {
+        p.then(function () {
+          reflectState(true);
+        }).catch(function () {
+          // Autoplay with sound blocked by the browser — wait for first
+          // user interaction anywhere on the page, then start playback.
+          reflectState(false);
+          var startOnInteract = function () {
+            audio.play().then(function () { reflectState(true); }).catch(function () {});
+            document.removeEventListener('click', startOnInteract);
+            document.removeEventListener('touchstart', startOnInteract);
+            document.removeEventListener('keydown', startOnInteract);
+          };
+          document.addEventListener('click', startOnInteract, { once: true });
+          document.addEventListener('touchstart', startOnInteract, { once: true });
+          document.addEventListener('keydown', startOnInteract, { once: true });
+        });
+      }
+    }
+
+    tryAutoplay();
+
+    toggleBtn.addEventListener('click', function () {
+      if (audio.paused) {
+        audio.play().then(function () { reflectState(true); }).catch(function () {});
+      } else {
+        audio.pause();
+        reflectState(false);
+      }
+    });
+  })();
+
   // ── MOBILE FLYING SCISSORS ────────────────────────────────
   (function mobileScissors() {
     var isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth <= 900;
@@ -104,9 +155,9 @@
 
   // ───────────────────────────────────────────────────────────
   var PHONE = '966534979996';
-  var TIKTOK_USERNAME = 'salonarassam';
+  var TIKTOK_USERNAME = 'barberrawatalrassam';
   var TIKTOK_URL = 'https://www.tiktok.com/@' + TIKTOK_USERNAME;
-  var SNAPCHAT_USERNAME = 'salonarassam';
+  var SNAPCHAT_USERNAME = 'barberrawatalrassam';
   var SNAPCHAT_URL = 'https://www.snapchat.com/add/' + SNAPCHAT_USERNAME;
   var currentLang = 'ar';
   // selectedPlatform is set by which float button the user clicks:
@@ -666,7 +717,7 @@
 
     var msg = '';
     if (lang === 'ar') {
-      msg += '\u2702\uFE0F *\u0635\u0627\u0644\u0648\u0646 \u0627\u0644\u0631\u0633\u0627\u0645*\n';
+      msg += '\u2702\uFE0F *\u0628\u0631\u0628\u0631 \u0631\u0648\u0627\u062a \u0627\u0644\u0631\u0633\u0627\u0645*\n';
       msg += D + '\n';
       msg += '\u2728 *\u062A\u0623\u0643\u064A\u062F \u062D\u062C\u0632 \u0648\u0625\u0634\u0639\u0627\u0631 \u062F\u0641\u0639* \u2705\n';
       msg += D + '\n';
@@ -677,7 +728,7 @@
       msg += D + '\n';
       msg += '\u2705 \u0633\u064A\u062A\u0645 \u0625\u0631\u0641\u0627\u0642 \u0635\u0648\u0631\u0629 \u0627\u0644\u0625\u064A\u0635\u0627\u0644 \u2014 \u0634\u0643\u0631\u0627\u064B \u0644\u0643\u0645!';
     } else {
-      msg += '\u2702\uFE0F *Salon Arassam*\n';
+      msg += '\u2702\uFE0F *Barber Rawat Al Rassam*\n';
       msg += D + '\n';
       msg += '\u2728 *Booking & Payment Notification* \u2705\n';
       msg += D + '\n';
@@ -704,7 +755,7 @@
       var methodLabel =
         methodKey === 'stc'  ? '\uD83D\uDCF1 STC Pay' :
         methodKey === 'mada' ? '\uD83D\uDCB3 \u0645\u062F\u0649 / Mada' : '\uD83D\uDCB3 \u0628\u0637\u0627\u0642\u0629';
-      msg += '\u2702\uFE0F *\u0635\u0627\u0644\u0648\u0646 \u0627\u0644\u0631\u0633\u0627\u0645*\n';
+      msg += '\u2702\uFE0F *\u0628\u0631\u0628\u0631 \u0631\u0648\u0627\u062a \u0627\u0644\u0631\u0633\u0627\u0645*\n';
       msg += D + '\n';
       msg += '\u2728 *\u062A\u0623\u0643\u064A\u062F \u062D\u062C\u0632 \u0648\u0625\u0634\u0639\u0627\u0631 \u062F\u0641\u0639* \u2705\n';
       msg += D + '\n';
@@ -720,7 +771,7 @@
       var mLabel =
         methodKey === 'stc'  ? '\uD83D\uDCF1 STC Pay' :
         methodKey === 'mada' ? '\uD83D\uDCB3 Mada Card' : '\uD83D\uDCB3 Card';
-      msg += '\u2702\uFE0F *Salon Arassam*\n';
+      msg += '\u2702\uFE0F *Barber Rawat Al Rassam*\n';
       msg += D + '\n';
       msg += '\u2728 *Booking & Payment Notification* \u2705\n';
       msg += D + '\n';
@@ -1108,7 +1159,7 @@
   // ============================================================
   var consoleStyle1 = 'color:#C9A84C;font-size:20px;font-weight:900;font-family:sans-serif;padding:6px 0;';
   var consoleStyle2 = 'color:#888;font-size:13px;font-family:sans-serif;';
-  console.log('%c\u2728 Salon Arassam \u2728', consoleStyle1);
+  console.log('%c\u2728 Barber Rawat Al Rassam \u2728', consoleStyle1);
   console.log('%cThis website was crafted with care by Ayman El Mjaber Developer \u2728', consoleStyle2);
   console.log('%c\uD83D\uDEAB This area is reserved for development purposes. Please go back to enjoying the site! \uD83D\uDEAB', consoleStyle2);
 

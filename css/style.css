@@ -1,20 +1,26 @@
 :root {
-  --black: #080808;
-  --dark: #111111;
-  --card: #181818;
-  --border: #2a2a2a;
+  --black: #0a0908;
+  --dark: #14110d;
+  --card: #1c1812;
+  --card-2: #221c15;
+  --border: #332c20;
+  --wood: #6b4a30;
+  --wood-light: #8a6240;
+  --wood-dark: #3d2a1c;
   --gold: #C9A84C;
   --gold-light: #E8C96A;
   --gold-dim: rgba(201,168,76,0.15);
   --cream: #F5F0E8;
-  --muted: #888888;
+  --muted: #948A78;
   --white: #FFFFFF;
+  --off-white: #EDEAE3;
   --font-ar: 'Cairo', sans-serif;
   --font-en-display: 'Playfair Display', serif;
   --font-en-body: 'Inter', sans-serif;
   --radius: 14px;
   --radius-sm: 8px;
   --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  --wood-texture: repeating-linear-gradient(100deg, rgba(120,80,50,0.10) 0px, rgba(120,80,50,0.10) 2px, transparent 2px, transparent 7px), linear-gradient(125deg, var(--wood-dark) 0%, var(--wood) 45%, var(--wood-dark) 100%);
 }
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -210,7 +216,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 
 #navbar.scrolled {
-  background: rgba(8,8,8,0.97);
+  background: rgba(10,9,8,0.97);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   padding: 0.7rem 0;
@@ -411,9 +417,9 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   inset: 0;
   background: linear-gradient(
     160deg,
-    rgba(8,8,8,0.92) 0%,
-    rgba(8,8,8,0.75) 40%,
-    rgba(8,8,8,0.88) 100%
+    rgba(10,9,8,0.93) 0%,
+    rgba(20,15,10,0.74) 40%,
+    rgba(10,9,8,0.90) 100%
   );
 }
 
@@ -681,7 +687,22 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   position: relative;
 }
 
+.img-stack::before {
+  content: '';
+  position: absolute;
+  top: -1.5rem;
+  inset-inline-end: -1.5rem;
+  width: 70%;
+  height: 60%;
+  background: var(--wood-texture);
+  border-radius: var(--radius);
+  opacity: 0.35;
+  z-index: 0;
+}
+
 .img-main {
+  position: relative;
+  z-index: 1;
   width: 100%;
   border-radius: var(--radius);
   object-fit: cover;
@@ -692,11 +713,12 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
 .img-accent {
   position: absolute;
+  z-index: 2;
   bottom: -2rem;
   left: -2rem;
   width: 45%;
   border-radius: var(--radius);
-  border: 3px solid var(--black);
+  border: 3px solid var(--off-white);
   box-shadow: 0 10px 40px rgba(0,0,0,0.6);
   object-fit: cover;
   aspect-ratio: 4/5;
@@ -1382,9 +1404,21 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .contact-link:hover { opacity: 0.75; }
 
 footer {
-  background: #050505;
-  border-top: 1px solid var(--border);
+  background: #060504;
+  border-top: 3px solid var(--border);
+  position: relative;
   padding: 3rem 0 2rem;
+}
+
+footer::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold), var(--off-white), var(--gold), transparent);
+  opacity: 0.6;
 }
 
 .footer-inner {
@@ -1466,6 +1500,41 @@ footer {
   .whatsapp-float svg { width: 24px; height: 24px; }
   .tiktok-float { bottom: calc(1.2rem + 50px + 12px); left: 1.2rem; width: 50px; height: 50px; }
   .tiktok-float svg { width: 22px; height: 22px; }
+}
+
+.sound-toggle {
+  position: fixed;
+  top: 5.2rem;
+  inset-inline-end: 1.2rem;
+  width: 42px;
+  height: 42px;
+  background: rgba(10,9,8,0.7);
+  border: 1.5px solid var(--gold-dim);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 950;
+  cursor: pointer;
+  padding: 0;
+  color: var(--gold);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  transition: border-color var(--transition), transform var(--transition), color var(--transition);
+}
+
+.sound-toggle:hover {
+  border-color: var(--gold);
+  transform: scale(1.08);
+}
+
+.sound-toggle.is-muted {
+  color: var(--muted);
+}
+
+@media (max-width: 600px) {
+  .sound-toggle { top: 4.6rem; inset-inline-end: 0.9rem; width: 38px; height: 38px; }
 }
 
 
