@@ -96,10 +96,486 @@
 
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="stylesheet" href="css/style.css">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       WOODEN THEME OVERRIDE  — بربر روات الرسام
+       ═══════════════════════════════════════════════════════════ -->
+  <style>
+  /* ─── ROOT: Warm Wood Palette ─── */
+  :root {
+    --bg:          #060402;
+    --bg-2:        #0F0804;
+    --bg-3:        #1A0E06;
+    --card:        #1D1008;
+    --card-hover:  #28160A;
+    --border:      #4A2810;
+    --border-light:#6B3D1C;
+    --text:        #EEE0C0;
+    --text-2:      #C8AE84;
+    --muted:       #8C6840;
+    --gold:        #C47628;
+    --gold-light:  #E09840;
+    --gold-dark:   #8C4E14;
+    --yellow:      #D08030;
+    --white:       #F5EDD8;
+    --radius:      3px;
+    --radius-lg:   8px;
+    --shadow:      0 4px 32px rgba(0,0,0,0.7);
+    --shadow-gold: 0 0 28px rgba(196,118,40,0.3);
+  }
+
+  /* ─── BODY ─── */
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+  }
+
+  /* Subtle wood-grain texture overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        91deg,
+        transparent 0,transparent 4px,
+        rgba(150,90,30,0.012) 4px,rgba(150,90,30,0.012) 8px
+      ),
+      repeating-linear-gradient(
+        180deg,
+        transparent 0,transparent 90px,
+        rgba(0,0,0,0.025) 90px,rgba(0,0,0,0.025) 92px
+      );
+    pointer-events: none;
+    z-index: 9998;
+  }
+
+  /* ─── LOADER ─── */
+  #loader { background: var(--bg); }
+  .loader-ring { border-color: rgba(196,118,40,0.12); border-top-color: var(--gold); }
+  .loader-ring.loader-ring-2 { border-color: rgba(224,152,64,0.08); border-top-color: var(--gold-light); }
+  .loader-bar { background: rgba(196,118,40,0.15); border-radius: 2px; }
+  .loader-bar-fill { background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-light)); border-radius: 2px; }
+  .loader-logo { font-family: 'Playfair Display','Cairo',serif; color: var(--text); }
+  .loader-subtitle { color: var(--muted); letter-spacing: 0.18em; font-size: 0.7rem; }
+  .logo-word-salon   { color: var(--muted); }
+  .logo-word-rawat   { color: var(--gold); }
+  .logo-word-arassam { color: var(--gold-light); }
+
+  /* ─── NAVBAR ─── */
+  #navbar {
+    background: rgba(6,4,2,0.97);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  .nav-logo { font-family: 'Playfair Display','Cairo',serif; }
+  .logo-en { color: var(--muted); font-size: 0.6rem; letter-spacing: 0.22em; }
+  .logo-divider { color: var(--border-light); }
+  .nav-links a { color: var(--text-2); letter-spacing: 0.03em; position: relative; }
+  .nav-links a::after {
+    content:''; position:absolute; bottom:-2px; left:0; right:0;
+    height:1px; background:var(--gold);
+    transform:scaleX(0); transform-origin:center;
+    transition:transform .3s ease;
+  }
+  .nav-links a:hover { color: var(--gold-light); }
+  .nav-links a:hover::after { transform:scaleX(1); }
+  .btn-book-nav,.btn-book-mobile {
+    background: linear-gradient(135deg,var(--gold),var(--gold-dark)) !important;
+    color: #0A0603 !important;
+    font-weight: 700;
+    border-radius: var(--radius);
+    border: none !important;
+    letter-spacing: 0.04em;
+  }
+  .btn-book-nav:hover,.btn-book-mobile:hover {
+    background: linear-gradient(135deg,var(--gold-light),var(--gold)) !important;
+    box-shadow: var(--shadow-gold);
+  }
+  .lang-toggle {
+    border: 1px solid var(--border-light) !important;
+    color: var(--muted) !important;
+    background: transparent !important;
+    border-radius: var(--radius);
+  }
+  .lang-toggle:hover { border-color: var(--gold) !important; color: var(--gold) !important; }
+  .mobile-menu {
+    background: var(--bg-2);
+    border-bottom: 1px solid var(--border);
+  }
+  .mobile-menu a { color: var(--text-2); border-bottom: 1px solid rgba(74,40,16,0.35); }
+  .hamburger span { background: var(--text); }
+
+  /* ─── HERO ─── */
+  .hero-overlay {
+    background: linear-gradient(
+      to bottom,
+      rgba(6,4,2,0.62) 0%,
+      rgba(6,4,2,0.35) 38%,
+      rgba(6,4,2,0.78) 82%,
+      rgba(6,4,2,0.98) 100%
+    );
+  }
+  .hero-badge {
+    background: rgba(196,118,40,0.14);
+    border: 1px solid rgba(196,118,40,0.55);
+    color: var(--gold-light);
+    border-radius: 2px;
+    letter-spacing: 0.12em;
+    font-size: 0.7rem;
+  }
+  .hero-title { font-family: 'Playfair Display','Cairo',serif; color: var(--text); text-shadow: 0 2px 24px rgba(0,0,0,0.85); }
+  .hero-sub { color: var(--text-2); letter-spacing: 0.04em; }
+  .stat-num { color: var(--gold); font-family:'Playfair Display',serif; }
+  .stat-label { color: var(--muted); }
+  .stat-div { background: var(--border); }
+  .scroll-text { color: var(--muted); letter-spacing: 0.14em; font-size: 0.68rem; }
+
+  /* ─── BUTTONS (global) ─── */
+  .btn-primary {
+    background: linear-gradient(135deg,var(--gold) 0%,var(--gold-dark) 100%) !important;
+    color: #060402 !important;
+    font-weight: 700;
+    border-radius: var(--radius);
+    border: none !important;
+    letter-spacing: 0.04em;
+    box-shadow: 0 4px 18px rgba(196,118,40,0.28);
+    transition: all .25s ease;
+  }
+  .btn-primary:hover {
+    background: linear-gradient(135deg,var(--gold-light) 0%,var(--gold) 100%) !important;
+    box-shadow: 0 6px 28px rgba(196,118,40,0.45);
+    transform: translateY(-2px);
+  }
+  .btn-secondary {
+    background: transparent !important;
+    border: 1px solid rgba(196,118,40,0.45) !important;
+    color: var(--text) !important;
+    border-radius: var(--radius);
+  }
+  .btn-secondary:hover {
+    border-color: var(--gold) !important;
+    background: rgba(196,118,40,0.07) !important;
+    color: var(--gold-light) !important;
+  }
+
+  /* ─── TICKER ─── */
+  .ticker-bar {
+    background: var(--bg-2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+  }
+  .ticker-track span { color: var(--gold-light); }
+
+  /* ─── SECTION HEADERS ─── */
+  .section-eyebrow {
+    color: var(--gold);
+    letter-spacing: 0.16em;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+  }
+  h2 { font-family:'Playfair Display','Cairo',serif; color: var(--text); }
+  .section-desc { color: var(--muted); }
+
+  /* ─── ABOUT ─── */
+  .about { background: var(--bg); }
+  .about-desc { color: var(--text-2); line-height: 1.95; }
+  .feature-icon { color: var(--gold); }
+  .feature-item strong { color: var(--text); }
+  .feature-item p { color: var(--muted); }
+  .img-main,.img-accent { border: 2px solid var(--border); box-shadow: 0 14px 48px rgba(0,0,0,0.75); }
+
+  /* ─── SERVICES ─── */
+  .services { background: var(--bg-2); }
+  .tab-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: var(--radius);
+    transition: all .25s;
+  }
+  .tab-btn.active,.tab-btn:hover {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #060402;
+    font-weight: 700;
+  }
+  .service-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 2px 14px rgba(0,0,0,0.45);
+    transition: all .28s ease;
+  }
+  .service-card:hover {
+    border-color: var(--gold);
+    background: var(--card-hover);
+    box-shadow: 0 8px 36px rgba(196,118,40,0.16);
+    transform: translateY(-4px);
+  }
+  .service-card.featured {
+    border-color: var(--gold-dark);
+    background: linear-gradient(135deg,var(--card),var(--card-hover));
+  }
+  .service-card.featured:hover { border-color: var(--gold); box-shadow: 0 8px 36px rgba(196,118,40,0.28); }
+  .service-icon-wrap {
+    background: rgba(196,118,40,0.1);
+    border: 1px solid rgba(196,118,40,0.22);
+    border-radius: 50%;
+  }
+  .service-icon { color: var(--gold); }
+  .service-card h3 { color: var(--text); font-weight: 700; }
+  .service-card p { color: var(--muted); }
+  .service-price { color: var(--gold-light); font-weight: 700; font-family:'Playfair Display',serif; }
+  .currency { color: var(--muted); font-size: 0.75em; }
+  .service-badge {
+    background: var(--gold);
+    color: #060402;
+    font-weight: 700;
+    border-radius: 2px;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+  }
+  .btn-book-service {
+    background: linear-gradient(135deg,var(--gold),var(--gold-dark));
+    color: #060402;
+    border: none;
+    border-radius: var(--radius);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .btn-book-service:hover {
+    background: linear-gradient(135deg,var(--gold-light),var(--gold));
+    box-shadow: var(--shadow-gold);
+  }
+
+  /* ─── PRICE LIST ─── */
+  .pricelist { background: var(--bg); }
+  .price-category { border: 1px solid var(--border); background: var(--card); border-radius: var(--radius-lg); overflow: hidden; }
+  .price-category-head { border-bottom: 1px solid var(--border); }
+  .price-category-icon { color: var(--gold); }
+  .price-category h3 { color: var(--text); }
+  .price-row {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(74,40,16,0.4);
+    color: var(--text-2);
+    cursor: pointer;
+    width: 100%;
+    transition: all .2s;
+  }
+  .price-row:last-child { border-bottom: none; }
+  .price-row:hover { background: rgba(196,118,40,0.07); }
+  .price-row:hover .price-row-name { color: var(--gold-light); }
+  .price-row-name { color: var(--text-2); }
+  .price-row-amount { color: var(--gold); font-weight: 700; font-family:'Playfair Display',serif; }
+
+  /* ─── GALLERY ─── */
+  .gallery { background: var(--bg-2); }
+  .gallery-item { border: 1px solid var(--border); border-radius: var(--radius); }
+  .gallery-overlay { background: linear-gradient(to top, rgba(6,4,2,0.9), transparent); color: var(--text-2); }
+  #galleryLoadMore {
+    background: transparent;
+    border: 1px solid var(--border-light);
+    color: var(--muted);
+    border-radius: var(--radius);
+    transition: all .2s;
+  }
+  #galleryLoadMore:hover { border-color: var(--gold); color: var(--gold); background: rgba(196,118,40,0.05); }
+
+  /* ─── REVIEWS ─── */
+  .reviews { background: var(--bg); }
+  .review-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); }
+  .review-card:hover { border-color: var(--gold-dark); }
+  .review-stars { color: var(--gold); }
+  .review-text { color: var(--text-2); line-height: 1.85; }
+  .review-avatar { background: rgba(196,118,40,0.14); border: 1px solid var(--border-light); color: var(--gold); }
+  .review-author strong { color: var(--text); }
+  .review-author span { color: var(--muted); }
+  .reviews-arrow {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 50%;
+    transition: all .2s;
+  }
+  .reviews-arrow:hover { border-color: var(--gold); color: var(--gold); background: var(--card-hover); }
+  .google-reviews-link {
+    display: inline-flex; align-items: center; gap: .5rem;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: .55rem 1rem;
+    font-size: .8rem;
+    transition: all .2s;
+    text-decoration: none;
+    margin-top: 1.5rem;
+  }
+  .google-reviews-link:hover { border-color: var(--gold-dark); color: var(--text); background: var(--card-hover); }
+
+  /* ─── CTA ─── */
+  .cta-section {
+    background: linear-gradient(135deg,var(--bg-3) 0%,var(--bg-2) 100%);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    position: relative; overflow: hidden;
+  }
+  .cta-section::before {
+    content:''; position:absolute; inset:0;
+    background: radial-gradient(ellipse at center, rgba(196,118,40,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-section p { color: var(--muted); }
+
+  /* ─── CONTACT ─── */
+  .contact { background: var(--bg); }
+  .contact-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); transition: all .2s; }
+  .contact-card:hover { border-color: var(--gold-dark); background: var(--card-hover); box-shadow: 0 8px 28px rgba(0,0,0,0.45); }
+  .contact-card h3 { color: var(--gold-light); font-size: .82rem; letter-spacing: .08em; text-transform: uppercase; }
+  .contact-card p,.contact-link { color: var(--text-2); }
+  .contact-link:hover { color: var(--gold); }
+
+  /* ─── FOOTER ─── */
+  footer { background: var(--bg); border-top: 1px solid var(--border); }
+  .footer-tagline { color: var(--muted); font-size: .78rem; }
+  .footer-links a,.footer-links button {
+    color: var(--muted); transition: color .2s;
+    background: none; border: none; cursor: pointer; font-size: .82rem;
+  }
+  .footer-links a:hover,.footer-links button:hover { color: var(--gold); }
+  .footer-copy { color: rgba(140,104,64,0.35); font-size: .72rem; }
+  .social-btn { background: var(--card); border: 1px solid var(--border); color: var(--text-2); border-radius: var(--radius); transition: all .2s; }
+  .social-btn:hover { border-color: var(--gold-dark); color: var(--gold); background: var(--card-hover); }
+  .tiktok-btn:hover   { border-color: #A0B0FF; color: #A0B0FF; }
+  .snapchat-btn:hover { border-color: #FFE500; color: #FFE500; }
+  .whatsapp-btn:hover { border-color: #25D366; color: #25D366; }
+
+  /* ─── FLOAT BUTTONS ─── */
+  .whatsapp-float { background: linear-gradient(135deg,#128C7E,#25D366); box-shadow: 0 4px 18px rgba(37,211,102,0.32); }
+  .tiktok-float { background: var(--card); border: 1px solid var(--border); color: var(--text); }
+  .snapchat-float { background: #FFE900; color: #000; }
+
+  /* ─── BOOKING CHAT ─── */
+  .booking-chat-overlay { background: rgba(6,4,2,0.82); }
+  .booking-chat { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: 0 20px 72px rgba(0,0,0,0.75); }
+  .chat-header { background: linear-gradient(135deg,var(--bg-3),var(--card-hover)); border-bottom: 1px solid var(--border); }
+  .chat-header-info strong { color: var(--text); }
+  .chat-online { color: #4CAF50; font-size: .72rem; }
+  .chat-close { color: var(--muted); background: transparent; border: none; cursor: pointer; }
+  .chat-close:hover { color: var(--gold); }
+  .chat-body { background: var(--bg-2); }
+  .chat-msg.bot {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text-2);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) var(--radius-lg);
+    font-size: .88rem;
+  }
+
+  /* ─── PAYMENT MODAL ─── */
+  .payment-overlay { background: rgba(6,4,2,0.88); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  .payment-modal {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 28px 90px rgba(0,0,0,0.85);
+  }
+  .payment-close { color: var(--muted); background: transparent; border: none; cursor: pointer; }
+  .payment-close:hover { color: var(--gold); }
+  .pay-title { font-family:'Playfair Display','Cairo',serif; color: var(--text); }
+  .pay-sub { color: var(--muted); }
+  .pay-summary { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); }
+  .pay-summary-row { border-bottom: 1px solid rgba(74,40,16,0.38); color: var(--text-2); }
+  .pay-summary-row strong { color: var(--text); }
+  .pay-summary-total { background: rgba(196,118,40,0.07); border-top: 1px solid var(--border-light); color: var(--text); }
+  .pay-amount { color: var(--gold); font-weight: 700; font-family:'Playfair Display',serif; }
+  .pay-method-label { color: var(--muted); font-size: .78rem; }
+  .pay-method-btn {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    color: var(--text-2);
+    border-radius: var(--radius);
+    transition: all .2s;
+    display: flex; align-items: center; gap: .75rem;
+    padding: .75rem 1rem; cursor: pointer; width: 100%;
+    margin-bottom: .5rem; text-align: right;
+  }
+  .pay-method-btn:hover,.pay-method-btn.selected {
+    border-color: var(--gold);
+    background: rgba(196,118,40,0.07);
+    color: var(--text);
+  }
+  .pay-method-btn.selected { box-shadow: 0 0 0 1px var(--gold); }
+  .pay-method-info strong { display:block; font-weight:700; color: var(--text); }
+  .pay-method-info span { font-size:.73rem; color: var(--muted); }
+  .pay-confirm-btn {
+    background: linear-gradient(135deg,var(--gold) 0%,var(--gold-dark) 100%);
+    color: #060402;
+    border: none; border-radius: var(--radius);
+    font-weight: 700; width: 100%; padding: .85rem;
+    cursor: pointer; transition: all .22s;
+    font-size: .88rem; margin-top: 1rem; display: block;
+  }
+  .pay-confirm-btn:hover {
+    background: linear-gradient(135deg,var(--gold-light) 0%,var(--gold) 100%);
+    box-shadow: var(--shadow-gold);
+    transform: translateY(-1px);
+  }
+  .pay-back-btn { background:transparent; border:none; color:var(--muted); cursor:pointer; font-size:.83rem; margin-bottom:.5rem; transition:color .2s; }
+  .pay-back-btn:hover { color:var(--gold); }
+  .bank-details-card { background:var(--bg-2); border:1px solid var(--border); border-radius:var(--radius); padding:1rem 1.2rem; margin:1rem 0; }
+  .bank-detail-row {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:.5rem 0; border-bottom:1px solid rgba(74,40,16,0.32);
+    color:var(--text-2); font-size:.83rem;
+  }
+  .bank-detail-row:last-child { border-bottom:none; }
+  .bank-detail-row strong { color:var(--text); font-weight:700; }
+  .iban-value { color:var(--gold); font-family:'Courier New',monospace; letter-spacing:.04em; font-size:.88rem; }
+  .iban-copy-wrap { display:flex; align-items:center; gap:.45rem; }
+  .copy-btn {
+    background:rgba(196,118,40,0.1); border:1px solid var(--border-light);
+    color:var(--muted); border-radius:4px; padding:.22rem; cursor:pointer;
+    display:flex; align-items:center; transition:all .2s;
+  }
+  .copy-btn:hover { color:var(--gold); border-color:var(--gold); background:rgba(196,118,40,0.16); }
+  .pay-amount-highlight { background:rgba(196,118,40,0.06); border-radius:3px; padding:.45rem .5rem; margin-top:.2rem; }
+  .pay-digital-steps { margin:1rem 0; }
+  .digital-step { display:flex; align-items:flex-start; gap:.7rem; margin-bottom:.7rem; color:var(--text-2); font-size:.83rem; }
+  .digital-step-num {
+    background:var(--gold); color:#060402; border-radius:50%;
+    width:22px; height:22px; display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:.72rem; flex-shrink:0;
+  }
+  .pay-success { text-align:center; padding:2rem; }
+  .pay-success-icon { font-size:3rem; margin-bottom:1rem; }
+  .pay-success h2 { color:var(--gold); font-family:'Playfair Display','Cairo',serif; }
+  .pay-success p { color:var(--muted); }
+  .pay-required-hint { color:#E57373; font-size:.78rem; margin-top:.25rem; }
+
+  /* ─── SOUND TOGGLE ─── */
+  .sound-toggle {
+    background: rgba(6,4,2,0.82);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 50%;
+    transition: all .2s;
+  }
+  .sound-toggle:hover { color:var(--gold); border-color:var(--gold); }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg-2); }
+  ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--gold-dark); }
+  </style>
 </head>
 <body>
 
-<audio id="bgAudio" src="audio/audio1.mp3" loop preload="auto"></audio>
+<audio id="bgAudio" src="audio/audio1.mp3" preload="auto"></audio>
 <button type="button" id="soundToggle" class="sound-toggle" aria-label="تشغيل / إيقاف الصوت" data-ar-on="إيقاف الصوت" data-ar-off="تشغيل الصوت" data-en-on="Mute" data-en-off="Unmute">
   <svg class="icon-sound-on" viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor"/><path d="M16.5 8.5a5 5 0 010 7" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M19 6a8.5 8.5 0 010 12" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.6"/></svg>
   <svg class="icon-sound-off" viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="display:none;"><path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor"/><path d="M16 9l5 6M21 9l-5 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
@@ -918,6 +1394,13 @@
             <span data-ar="بطاقة مدى" data-en="Mada Debit Card">بطاقة مدى</span>
           </div>
         </button>
+        <button class="pay-method-btn" data-method="ahli" type="button">
+          <div class="pay-method-icon">🏦</div>
+          <div class="pay-method-info">
+            <strong>بنك الأهلي / Al Ahli Bank</strong>
+            <span data-ar="تحويل بنكي عبر الأهلي" data-en="Bank Transfer via Al Ahli">تحويل بنكي عبر الأهلي</span>
+          </div>
+        </button>
       </div>
       <p class="pay-required-hint" id="payRequiredHint" style="display:none;" data-ar="⚠ يرجى اختيار طريقة دفع للمتابعة" data-en="⚠ Please select a payment method to continue">⚠ يرجى اختيار طريقة دفع للمتابعة</p>
       <button class="pay-confirm-btn" id="payProceedBtn" type="button" data-ar="متابعة الدفع ←" data-en="Proceed to Payment →">متابعة الدفع ←</button>
@@ -974,6 +1457,58 @@
       <button class="pay-confirm-btn" id="digitalWhatsappBtn" type="button" data-ar="✅ أرسل إيصال الدفع عبر واتساب" data-en="✅ Send Payment Receipt via WhatsApp">✅ أرسل إيصال الدفع عبر واتساب</button>
     </div>
 
+    <!-- Step 2b: Al Ahli Bank -->
+    <div class="pay-step" id="payStepAhli" style="display:none;">
+      <button class="pay-back-btn" id="payBackAhli" type="button">← <span data-ar="رجوع" data-en="Back">رجوع</span></button>
+      <div class="pay-header">
+        <div class="pay-icon">🏦</div>
+        <h2 class="pay-title" data-ar="بنك الأهلي" data-en="Al Ahli Bank">بنك الأهلي</h2>
+        <p class="pay-sub" data-ar="تحويل بنكي عبر رقم IBAN" data-en="Bank transfer via IBAN">تحويل بنكي عبر رقم IBAN</p>
+      </div>
+      <div class="bank-details-card">
+        <div class="bank-detail-row">
+          <span data-ar="المستفيد" data-en="Recipient">المستفيد</span>
+          <strong data-ar="بربر روات الرسام" data-en="Barber Rawat Al Rassam">بربر روات الرسام</strong>
+        </div>
+        <div class="bank-detail-row">
+          <span data-ar="البنك" data-en="Bank">البنك</span>
+          <strong data-ar="بنك الأهلي التجاري" data-en="Al Ahli Bank (NCB)">بنك الأهلي التجاري</strong>
+        </div>
+        <div class="bank-detail-row">
+          <span>IBAN</span>
+          <div class="iban-copy-wrap">
+            <strong class="iban-value" dir="ltr">SA0000000000000000000000</strong>
+            <button class="copy-btn" id="copyAhliIban" type="button" aria-label="Copy IBAN">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="bank-detail-row pay-amount-highlight">
+          <span data-ar="المبلغ المطلوب" data-en="Amount Due">المبلغ المطلوب</span>
+          <strong class="pay-amount" id="ahliAmount">— <span data-ar="ريال" data-en="SAR">ريال</span></strong>
+        </div>
+      </div>
+      <div class="pay-digital-steps">
+        <div class="digital-step">
+          <div class="digital-step-num">1</div>
+          <p data-ar="افتح تطبيق الأهلي أو تطبيق البنك الخاص بك" data-en="Open Al Ahli app or your banking app">افتح تطبيق الأهلي أو تطبيق البنك الخاص بك</p>
+        </div>
+        <div class="digital-step">
+          <div class="digital-step-num">2</div>
+          <p data-ar="اختر «تحويل» ثم «إلى حساب آخر» وأدخل رقم IBAN أعلاه" data-en="Choose «Transfer» then enter the IBAN above">اختر «تحويل» ثم «إلى حساب آخر» وأدخل رقم IBAN أعلاه</p>
+        </div>
+        <div class="digital-step">
+          <div class="digital-step-num">3</div>
+          <p data-ar="أدخل المبلغ بالضبط واكتب اسمك في خانة الملاحظات" data-en="Enter the exact amount and write your name in the notes">أدخل المبلغ بالضبط واكتب اسمك في خانة الملاحظات</p>
+        </div>
+        <div class="digital-step">
+          <div class="digital-step-num">4</div>
+          <p data-ar="أرسل صورة الإيصال عبر واتساب لتأكيد موعدك" data-en="Send the receipt screenshot via WhatsApp to confirm">أرسل صورة الإيصال عبر واتساب لتأكيد موعدك</p>
+        </div>
+      </div>
+      <button class="pay-confirm-btn" id="ahliWhatsappBtn" type="button" data-ar="✅ أرسل إيصال التحويل عبر واتساب" data-en="✅ Send Transfer Receipt via WhatsApp">✅ أرسل إيصال التحويل عبر واتساب</button>
+    </div>
+
     <!-- Step 3: Success -->
     <div class="pay-step" id="payStepSuccess" style="display:none;">
       <div class="pay-success">
@@ -989,5 +1524,110 @@
 <!-- ===== END PAYMENT MODAL ===== -->
 
 <script src="js/main.js" charset="utf-8"></script>
+
+<!-- ═══════════════════════════════════════════
+     PATCH: WA message line-breaks + Al Ahli bank flow
+     ═══════════════════════════════════════════ -->
+<script>
+(function() {
+  /* ── 1. WhatsApp message line-break fix ──
+     Intercepts window.open so every \n in the ?text= param
+     gets properly encoded as %0A before WA receives it. */
+  var _open = window.open;
+  window.open = function(url) {
+    if (typeof url === 'string' && (url.indexOf('wa.me') !== -1 || url.indexOf('api.whatsapp.com') !== -1)) {
+      var idx = url.indexOf('?text=');
+      if (idx !== -1) {
+        var base = url.slice(0, idx + 6);
+        var msg  = url.slice(idx + 6);
+        try { msg = decodeURIComponent(msg); } catch(e) {}
+        msg = msg.replace(/\\n/g, '\n');        // literal \n → real newline
+        url = base + encodeURIComponent(msg);
+      }
+    }
+    return _open.apply(this, arguments);
+  };
+
+  /* ── 2. Bank Al Ahli payment flow ── */
+  document.addEventListener('DOMContentLoaded', function () {
+    var PHONE = '966534979996';
+
+    var proceedBtn  = document.getElementById('payProceedBtn');
+    var ahliStep    = document.getElementById('payStepAhli');
+    var ahliBack    = document.getElementById('payBackAhli');
+    var ahliWaBtn   = document.getElementById('ahliWhatsappBtn');
+    var copyIban    = document.getElementById('copyAhliIban');
+    var step1       = document.getElementById('payStep1');
+
+    function hideAllSteps() {
+      document.querySelectorAll('.pay-step').forEach(function(s){ s.style.display = 'none'; });
+    }
+
+    /* Intercept proceed button: if Al Ahli is selected, show our step */
+    if (proceedBtn) {
+      proceedBtn.addEventListener('click', function () {
+        /* Small delay so main.js runs first */
+        setTimeout(function () {
+          var sel = document.querySelector('.pay-method-btn.selected');
+          if (sel && sel.dataset.method === 'ahli') {
+            hideAllSteps();
+            ahliStep.style.display = 'block';
+            /* Sync amount */
+            var summaryAmt = document.getElementById('summaryAmount');
+            var ahliAmt    = document.getElementById('ahliAmount');
+            if (summaryAmt && ahliAmt) ahliAmt.innerHTML = summaryAmt.innerHTML;
+          }
+        }, 30);
+      });
+    }
+
+    /* Back button */
+    if (ahliBack) {
+      ahliBack.addEventListener('click', function () {
+        hideAllSteps();
+        if (step1) step1.style.display = 'block';
+      });
+    }
+
+    /* WhatsApp send with receipt */
+    if (ahliWaBtn) {
+      ahliWaBtn.addEventListener('click', function () {
+        var service  = document.getElementById('summaryService');
+        var name     = document.getElementById('summaryName');
+        var dateTime = document.getElementById('summaryDateTime');
+        var amount   = document.getElementById('summaryAmount');
+
+        var msg =
+          '🏦 طلب حجز - تحويل بنك الأهلي\n' +
+          '━━━━━━━━━━━━━━━━━\n' +
+          '👤 الاسم: '          + (name     ? name.textContent.trim()     : '—') + '\n' +
+          '💈 الخدمة: '         + (service  ? service.textContent.trim()  : '—') + '\n' +
+          '📅 التاريخ والوقت: ' + (dateTime ? dateTime.textContent.trim() : '—') + '\n' +
+          '💰 المبلغ: '         + (amount   ? amount.textContent.trim()   : '—') + '\n' +
+          '━━━━━━━━━━━━━━━━━\n' +
+          '📸 صورة إيصال التحويل مرفقة';
+
+        window.open('https://wa.me/' + PHONE + '?text=' + encodeURIComponent(msg), '_blank');
+
+        /* Show success */
+        hideAllSteps();
+        var successStep = document.getElementById('payStepSuccess');
+        if (successStep) successStep.style.display = 'block';
+      });
+    }
+
+    /* Copy IBAN button */
+    if (copyIban) {
+      copyIban.addEventListener('click', function () {
+        navigator.clipboard && navigator.clipboard.writeText('SA0000000000000000000000');
+        copyIban.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" xmlns="http://www.w3.org/2000/svg"><polyline points="20 6 9 17 4 12"/></svg>';
+        setTimeout(function(){
+          copyIban.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+        }, 2000);
+      });
+    }
+  });
+})();
+</script>
 </body>
 </html>
