@@ -52,6 +52,20 @@
     });
   })();
 
+  // ── LOADER SPINNER IMAGE FALLBACK ─────────────────────────
+  // If loadingSpinner.jpg hasn't been added yet, show the SVG ring
+  // instead of a broken image icon.
+  (function loaderImgFallback() {
+    var img = document.getElementById('loaderSpinnerImg');
+    var fallback = document.getElementById('loaderImgFallback');
+    if (!img || !fallback) return;
+    fallback.style.display = 'none';
+    img.addEventListener('error', function () {
+      img.style.display = 'none';
+      fallback.style.display = 'flex';
+    }, { once: true });
+  })();
+
   // ── MOBILE FLYING SCISSORS ────────────────────────────────
   (function mobileScissors() {
     var isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth <= 900;
@@ -705,39 +719,31 @@
     }
   }
 
-  // ── WhatsApp message builder — 100% safe emoji ─────────────
-  // Uses only Unicode emoji codepoints, zero legacy symbols
+  // ── Message builder — plain text, clean line breaks, no emoji ──
   function buildMsg(lang) {
     var svcAr  = selectedService ? selectedService.ar : selectedServiceName;
     var svcEn  = selectedService ? selectedService.en : selectedServiceName;
     var price  = selectedServicePrice || '-';
     var name   = selectedClientName || '-';
-    var dt     = (selectedDate && selectedTime) ? (selectedDate + ' \u2014 ' + selectedTime) : '-';
-    var D = '================================';
+    var dt     = (selectedDate && selectedTime) ? (selectedDate + ' - ' + selectedTime) : '-';
 
     var msg = '';
     if (lang === 'ar') {
-      msg += '\u2702\uFE0F *\u0628\u0631\u0628\u0631 \u0631\u0648\u0627\u062a \u0627\u0644\u0631\u0633\u0627\u0645*\n';
-      msg += D + '\n';
-      msg += '\u2728 *\u062A\u0623\u0643\u064A\u062F \u062D\u062C\u0632 \u0648\u0625\u0634\u0639\u0627\u0631 \u062F\u0641\u0639* \u2705\n';
-      msg += D + '\n';
-      msg += '\uD83D\uDC64 *\u0627\u0644\u0627\u0633\u0645:* ' + name + '\n';
-      msg += '\uD83D\uDC88 *\u0627\u0644\u062E\u062F\u0645\u0629:* ' + svcAr + '\n';
-      msg += '\uD83D\uDCB0 *\u0627\u0644\u0645\u0628\u0644\u063A:* ' + price + ' \u0631\u064A\u0627\u0644\n';
-      msg += '\uD83D\uDCC5 *\u0627\u0644\u0645\u0648\u0639\u062F:* ' + dt + '\n';
-      msg += D + '\n';
-      msg += '\u2705 \u0633\u064A\u062A\u0645 \u0625\u0631\u0641\u0627\u0642 \u0635\u0648\u0631\u0629 \u0627\u0644\u0625\u064A\u0635\u0627\u0644 \u2014 \u0634\u0643\u0631\u0627\u064B \u0644\u0643\u0645!';
+      msg += '\u0628\u0631\u0628\u0631 \u0631\u0648\u0627\u062a \u0627\u0644\u0631\u0633\u0627\u0645\n';
+      msg += '\u0637\u0644\u0628 \u062D\u062C\u0632 \u062C\u062F\u064A\u062F\n\n';
+      msg += '\u0627\u0644\u0627\u0633\u0645: ' + name + '\n';
+      msg += '\u0627\u0644\u062E\u062F\u0645\u0629: ' + svcAr + '\n';
+      msg += '\u0627\u0644\u0645\u0628\u0644\u063A: ' + price + ' \u0631\u064A\u0627\u0644\n';
+      msg += '\u0627\u0644\u0645\u0648\u0639\u062F: ' + dt + '\n\n';
+      msg += '\u0633\u0623\u0631\u0633\u0644 \u0635\u0648\u0631\u0629 \u0627\u0644\u0625\u064A\u0635\u0627\u0644 \u0628\u0639\u062F \u0627\u0644\u062F\u0641\u0639. \u0634\u0643\u0631\u0627\u064B!';
     } else {
-      msg += '\u2702\uFE0F *Barber Rawat Al Rassam*\n';
-      msg += D + '\n';
-      msg += '\u2728 *Booking & Payment Notification* \u2705\n';
-      msg += D + '\n';
-      msg += '\uD83D\uDC64 *Name:* ' + name + '\n';
-      msg += '\uD83D\uDC88 *Service:* ' + svcEn + '\n';
-      msg += '\uD83D\uDCB0 *Amount:* ' + price + ' SAR\n';
-      msg += '\uD83D\uDCC5 *Appointment:* ' + dt + '\n';
-      msg += D + '\n';
-      msg += '\u2705 Receipt screenshot will be attached \u2014 thank you!';
+      msg += 'Barber Rawat Al Rassam\n';
+      msg += 'New Booking Request\n\n';
+      msg += 'Name: ' + name + '\n';
+      msg += 'Service: ' + svcEn + '\n';
+      msg += 'Amount: ' + price + ' SAR\n';
+      msg += 'Appointment: ' + dt + '\n\n';
+      msg += 'I will send the payment receipt after paying. Thank you!';
     }
     return msg;
   }
@@ -747,42 +753,35 @@
     var svcEn  = selectedService ? selectedService.en : selectedServiceName;
     var price  = selectedServicePrice || '-';
     var name   = selectedClientName || '-';
-    var dt     = (selectedDate && selectedTime) ? (selectedDate + ' \u2014 ' + selectedTime) : '-';
-    var D = '================================';
+    var dt     = (selectedDate && selectedTime) ? (selectedDate + ' - ' + selectedTime) : '-';
 
     var msg = '';
     if (lang === 'ar') {
       var methodLabel =
-        methodKey === 'stc'  ? '\uD83D\uDCF1 STC Pay' :
-        methodKey === 'mada' ? '\uD83D\uDCB3 \u0645\u062F\u0649 / Mada' : '\uD83D\uDCB3 \u0628\u0637\u0627\u0642\u0629';
-      msg += '\u2702\uFE0F *\u0628\u0631\u0628\u0631 \u0631\u0648\u0627\u062a \u0627\u0644\u0631\u0633\u0627\u0645*\n';
-      msg += D + '\n';
-      msg += '\u2728 *\u062A\u0623\u0643\u064A\u062F \u062D\u062C\u0632 \u0648\u0625\u0634\u0639\u0627\u0631 \u062F\u0641\u0639* \u2705\n';
-      msg += D + '\n';
-      msg += '\uD83D\uDC64 *\u0627\u0644\u0627\u0633\u0645:* ' + name + '\n';
-      msg += '\uD83D\uDC88 *\u0627\u0644\u062E\u062F\u0645\u0629:* ' + svcAr + '\n';
-      msg += '\uD83D\uDCB0 *\u0627\u0644\u0645\u0628\u0644\u063A:* ' + price + ' \u0631\u064A\u0627\u0644\n';
-      msg += '\uD83D\uDCC5 *\u0627\u0644\u0645\u0648\u0639\u062F:* ' + dt + '\n';
-      msg += '\uD83D\uDCB3 *\u0637\u0631\u064A\u0642\u0629 \u0627\u0644\u062F\u0641\u0639:* ' + methodLabel + '\n';
-      if (methodKey === 'stc' || methodKey === 'mada') msg += '\uD83D\uDCDE *\u0631\u0642\u0645 \u0627\u0644\u062A\u062D\u0648\u064A\u0644:* +966534979996\n';
-      msg += D + '\n';
-      msg += '\u2705 \u0633\u064A\u062A\u0645 \u0625\u0631\u0641\u0627\u0642 \u0635\u0648\u0631\u0629 \u0627\u0644\u0625\u064A\u0635\u0627\u0644 \u2014 \u0634\u0643\u0631\u0627\u064B \u0644\u0643\u0645!';
+        methodKey === 'stc'  ? 'STC Pay' :
+        methodKey === 'mada' ? '\u0645\u062F\u0649' : '\u0628\u0637\u0627\u0642\u0629';
+      msg += '\u0628\u0631\u0628\u0631 \u0631\u0648\u0627\u062a \u0627\u0644\u0631\u0633\u0627\u0645\n';
+      msg += '\u062A\u0623\u0643\u064A\u062F \u062D\u062C\u0632 \u0648\u062F\u0641\u0639\n\n';
+      msg += '\u0627\u0644\u0627\u0633\u0645: ' + name + '\n';
+      msg += '\u0627\u0644\u062E\u062F\u0645\u0629: ' + svcAr + '\n';
+      msg += '\u0627\u0644\u0645\u0628\u0644\u063A: ' + price + ' \u0631\u064A\u0627\u0644\n';
+      msg += '\u0627\u0644\u0645\u0648\u0639\u062F: ' + dt + '\n';
+      msg += '\u0637\u0631\u064A\u0642\u0629 \u0627\u0644\u062F\u0641\u0639: ' + methodLabel + '\n';
+      if (methodKey === 'stc' || methodKey === 'mada') msg += '\u0631\u0642\u0645 \u0627\u0644\u062A\u062D\u0648\u064A\u0644: +966534979996\n';
+      msg += '\n\u0633\u0623\u0631\u0633\u0644 \u0635\u0648\u0631\u0629 \u0627\u0644\u0625\u064A\u0635\u0627\u0644 \u0628\u0639\u062F \u0627\u0644\u062F\u0641\u0639. \u0634\u0643\u0631\u0627\u064B!';
     } else {
       var mLabel =
-        methodKey === 'stc'  ? '\uD83D\uDCF1 STC Pay' :
-        methodKey === 'mada' ? '\uD83D\uDCB3 Mada Card' : '\uD83D\uDCB3 Card';
-      msg += '\u2702\uFE0F *Barber Rawat Al Rassam*\n';
-      msg += D + '\n';
-      msg += '\u2728 *Booking & Payment Notification* \u2705\n';
-      msg += D + '\n';
-      msg += '\uD83D\uDC64 *Name:* ' + name + '\n';
-      msg += '\uD83D\uDC88 *Service:* ' + svcEn + '\n';
-      msg += '\uD83D\uDCB0 *Amount:* ' + price + ' SAR\n';
-      msg += '\uD83D\uDCC5 *Appointment:* ' + dt + '\n';
-      msg += '\uD83D\uDCB3 *Payment Method:* ' + mLabel + '\n';
-      if (methodKey === 'stc' || methodKey === 'mada') msg += '\uD83D\uDCDE *Transfer Number:* +966534979996\n';
-      msg += D + '\n';
-      msg += '\u2705 Receipt screenshot will be attached \u2014 thank you!';
+        methodKey === 'stc'  ? 'STC Pay' :
+        methodKey === 'mada' ? 'Mada Card' : 'Card';
+      msg += 'Barber Rawat Al Rassam\n';
+      msg += 'Booking & Payment\n\n';
+      msg += 'Name: ' + name + '\n';
+      msg += 'Service: ' + svcEn + '\n';
+      msg += 'Amount: ' + price + ' SAR\n';
+      msg += 'Appointment: ' + dt + '\n';
+      msg += 'Payment Method: ' + mLabel + '\n';
+      if (methodKey === 'stc' || methodKey === 'mada') msg += 'Transfer Number: +966534979996\n';
+      msg += '\nI will send the payment receipt after paying. Thank you!';
     }
     return msg;
   }
