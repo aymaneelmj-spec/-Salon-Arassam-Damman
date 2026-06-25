@@ -985,7 +985,7 @@ body.lang-en .hero-title { font-family: var(--font-en-display); }
 .service-icon-wrap {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
 }
 
 .service-icon {

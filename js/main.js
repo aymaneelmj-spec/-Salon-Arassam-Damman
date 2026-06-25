@@ -673,13 +673,8 @@
       openChat();
     }
 
-    // If platform was set via a float button, use it directly
-    // Otherwise show the picker so client can choose
-    if (selectedPlatform && selectedPlatform !== 'whatsapp') {
-      _doOpenBooking(selectedPlatform);
-    } else {
-      showPlatformPicker(function(platform) { _doOpenBooking(platform); });
-    }
+    // Always show platform picker so client explicitly chooses their channel
+    showPlatformPicker(function(platform) { _doOpenBooking(platform); });
   }
 
   document.querySelectorAll('.btn-book-service').forEach(function (btn) {
@@ -1090,6 +1085,28 @@
       if(sub)   sub.textContent = currentLang==='ar' ? '\u062F\u0641\u0639 \u0645\u0628\u0627\u0634\u0631 \u0639\u0628\u0631 \u0628\u0637\u0627\u0642\u0629 \u0645\u062F\u0649' : 'Pay via Mada debit card';
       if(step1) step1.textContent = currentLang==='ar' ? '\u0627\u0641\u062A\u062D \u062A\u0637\u0628\u064A\u0642 \u0645\u0635\u0631\u0641\u0643 \u0648\u0627\u062F\u062E\u0644 \u062E\u062F\u0645\u0629 \u0627\u0644\u062A\u062D\u0648\u064A\u0644' : 'Open your bank app and go to Transfer';
     }
+    // Update step 4 text + send button to match selected platform
+    var step4El = document.querySelector('#payStepDigital .digital-step:last-child p');
+    var sendBtn = document.getElementById('digitalWhatsappBtn');
+    var step4Ar, step4En, sendAr, sendEn;
+    if (selectedPlatform === 'tiktok') {
+      step4Ar = '\u0623\u0631\u0633\u0644 \u0635\u0648\u0631\u0629 \u0627\u0644\u0625\u064A\u0635\u0627\u0644 \u0639\u0628\u0631 \u062A\u064A\u0643 \u062A\u0648\u0643 \u0644\u062A\u0623\u0643\u064A\u062F \u0645\u0648\u0639\u062F\u0643';
+      step4En = 'Send the receipt screenshot via TikTok to confirm';
+      sendAr  = '\uD83C\uDFB5 \u0623\u0631\u0633\u0644 \u0625\u064A\u0635\u0627\u0644 \u0627\u0644\u062F\u0641\u0639 \u0639\u0628\u0631 \u062A\u064A\u0643 \u062A\u0648\u0643';
+      sendEn  = '\uD83C\uDFB5 Send Receipt via TikTok';
+    } else if (selectedPlatform === 'snapchat') {
+      step4Ar = '\u0623\u0631\u0633\u0644 \u0635\u0648\u0631\u0629 \u0627\u0644\u0625\u064A\u0635\u0627\u0644 \u0639\u0628\u0631 \u0633\u0646\u0627\u0628 \u0634\u0627\u062A \u0644\u062A\u0623\u0643\u064A\u062F \u0645\u0648\u0639\u062F\u0643';
+      step4En = 'Send the receipt screenshot via Snapchat to confirm';
+      sendAr  = '\uD83D\uDC7B \u0623\u0631\u0633\u0644 \u0625\u064A\u0635\u0627\u0644 \u0627\u0644\u062F\u0641\u0639 \u0639\u0628\u0631 \u0633\u0646\u0627\u0628 \u0634\u0627\u062A';
+      sendEn  = '\uD83D\uDC7B Send Receipt via Snapchat';
+    } else {
+      step4Ar = '\u0623\u0631\u0633\u0644 \u0635\u0648\u0631\u0629 \u0627\u0644\u0625\u064A\u0635\u0627\u0644 \u0639\u0628\u0631 \u0648\u0627\u062A\u0633\u0627\u0628 \u0644\u062A\u0623\u0643\u064A\u062F \u0645\u0648\u0639\u062F\u0643';
+      step4En = 'Send the receipt screenshot via WhatsApp to confirm';
+      sendAr  = '\u2705 \u0623\u0631\u0633\u0644 \u0625\u064A\u0635\u0627\u0644 \u0627\u0644\u062F\u0641\u0639 \u0639\u0628\u0631 \u0648\u0627\u062A\u0633\u0627\u0628';
+      sendEn  = '\u2705 Send Payment Receipt via WhatsApp';
+    }
+    if (step4El) step4El.textContent = currentLang === 'ar' ? step4Ar : step4En;
+    if (sendBtn) sendBtn.textContent = currentLang === 'ar' ? sendAr : sendEn;
     payStepDigital.style.display = 'block';
   });
 
@@ -1281,6 +1298,13 @@
 
   var payDoneBtn = document.getElementById('payDoneBtn');
   if(payDoneBtn) payDoneBtn.addEventListener('click', closePaymentModal);
+
+  // Expose platform state + helpers for inline patch scripts
+  Object.defineProperty(window, '_selectedPlatform', {
+    get: function() { return selectedPlatform; }
+  });
+  window.showTikTokMessageBox  = showTikTokMessageBox;
+  window.showSnapchatMessageBox = showSnapchatMessageBox;
 
   // ============================================================
   // DEV NOTES IN CONSOLE

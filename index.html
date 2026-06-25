@@ -1714,6 +1714,20 @@
             var summaryAmt = document.getElementById('summaryAmount');
             var ahliAmt    = document.getElementById('ahliAmount');
             if (summaryAmt && ahliAmt) ahliAmt.innerHTML = summaryAmt.innerHTML;
+            /* Update step 4 text + button to match platform */
+            var plat = window._selectedPlatform || 'whatsapp';
+            var step4 = ahliStep.querySelector('.digital-step:last-child p');
+            var btn   = document.getElementById('ahliWhatsappBtn');
+            if (plat === 'tiktok') {
+              if (step4) step4.textContent = 'أرسل صورة الإيصال عبر تيك توك لتأكيد موعدك';
+              if (btn)   btn.textContent   = '🎵 أرسل إيصال التحويل عبر تيك توك';
+            } else if (plat === 'snapchat') {
+              if (step4) step4.textContent = 'أرسل صورة الإيصال عبر سناب شات لتأكيد موعدك';
+              if (btn)   btn.textContent   = '👻 أرسل إيصال التحويل عبر سناب شات';
+            } else {
+              if (step4) step4.textContent = 'أرسل صورة الإيصال عبر واتساب لتأكيد موعدك';
+              if (btn)   btn.textContent   = '✅ أرسل إيصال التحويل عبر واتساب';
+            }
           }
         }, 30);
       });
@@ -1727,7 +1741,7 @@
       });
     }
 
-    /* WhatsApp send with receipt */
+    /* Platform-aware send with receipt */
     if (ahliWaBtn) {
       ahliWaBtn.addEventListener('click', function () {
         var service  = document.getElementById('summaryService');
@@ -1745,12 +1759,32 @@
           '━━━━━━━━━━━━━━━━━\n' +
           '📸 صورة إيصال التحويل مرفقة';
 
-        window.open('https://wa.me/' + PHONE + '?text=' + encodeURIComponent(msg), '_blank');
-
-        /* Show success */
+        /* Route to the platform the client chose */
+        var plat = (window._selectedPlatform || 'whatsapp');
         hideAllSteps();
         var successStep = document.getElementById('payStepSuccess');
-        if (successStep) successStep.style.display = 'block';
+
+        if (plat === 'tiktok') {
+          /* reuse TikTok message box via main.js helper if available */
+          if (typeof showTikTokMessageBox === 'function') {
+            if (successStep) successStep.style.display = 'block';
+            showTikTokMessageBox(msg);
+          } else {
+            window.open('https://wa.me/' + PHONE + '?text=' + encodeURIComponent(msg), '_blank');
+            if (successStep) successStep.style.display = 'block';
+          }
+        } else if (plat === 'snapchat') {
+          if (typeof showSnapchatMessageBox === 'function') {
+            if (successStep) successStep.style.display = 'block';
+            showSnapchatMessageBox(msg);
+          } else {
+            window.open('https://wa.me/' + PHONE + '?text=' + encodeURIComponent(msg), '_blank');
+            if (successStep) successStep.style.display = 'block';
+          }
+        } else {
+          window.open('https://wa.me/' + PHONE + '?text=' + encodeURIComponent(msg), '_blank');
+          if (successStep) successStep.style.display = 'block';
+        }
       });
     }
 
