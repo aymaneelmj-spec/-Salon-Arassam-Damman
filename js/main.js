@@ -214,12 +214,12 @@
     if (!overlay) return;
 
     overlay.querySelectorAll('.platform-picker-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
         var platform = btn.getAttribute('data-platform');
+        var cb = _platformPickerCb; // save BEFORE close nullifies it
         closePlatformPicker();
-        if (_platformPickerCb) {
-          var cb = _platformPickerCb;
-          _platformPickerCb = null;
+        if (cb) {
           setTimeout(function() { cb(platform); }, 180);
         }
       });
