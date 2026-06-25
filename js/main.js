@@ -1,47 +1,51 @@
 (function () {
   'use strict';
 
-  // ── BACKGROUND AUDIO ON LOAD ──────────────────────────────
+  // ── BACKGROUND AUDIO — ONE SHOT (no loop) ────────────────
   (function bgAudio() {
     var audio = document.getElementById('bgAudio');
     var toggleBtn = document.getElementById('soundToggle');
     if (!audio || !toggleBtn) return;
 
-    var iconOn = toggleBtn.querySelector('.icon-sound-on');
+    var iconOn  = toggleBtn.querySelector('.icon-sound-on');
     var iconOff = toggleBtn.querySelector('.icon-sound-off');
+    var audioPlayed = false; // guard: only auto-start once
+
+    // Ensure no accidental loop
+    audio.loop = false;
+    audio.volume = 0.55;
 
     function reflectState(isPlaying) {
       toggleBtn.classList.toggle('is-muted', !isPlaying);
-      if (iconOn) iconOn.style.display = isPlaying ? '' : 'none';
+      if (iconOn)  iconOn.style.display  = isPlaying ? '' : 'none';
       if (iconOff) iconOff.style.display = isPlaying ? 'none' : '';
     }
 
-    audio.volume = 0.55;
-
     function tryAutoplay() {
+      if (audioPlayed) return;
       var p = audio.play();
       if (p && typeof p.then === 'function') {
         p.then(function () {
+          audioPlayed = true;
           reflectState(true);
         }).catch(function () {
-          // Autoplay with sound blocked by the browser — wait for first
-          // user interaction anywhere on the page, then start playback.
           reflectState(false);
-          var startOnInteract = function () {
+          // Wait for first real user gesture, then play once
+          function startOnce() {
+            if (audioPlayed) return;
+            audioPlayed = true;
             audio.play().then(function () { reflectState(true); }).catch(function () {});
-            document.removeEventListener('click', startOnInteract);
-            document.removeEventListener('touchstart', startOnInteract);
-            document.removeEventListener('keydown', startOnInteract);
-          };
-          document.addEventListener('click', startOnInteract, { once: true });
-          document.addEventListener('touchstart', startOnInteract, { once: true });
-          document.addEventListener('keydown', startOnInteract, { once: true });
+          }
+          document.addEventListener('click',      startOnce, { once: true });
+          document.addEventListener('touchstart', startOnce, { once: true });
+          document.addEventListener('keydown',    startOnce, { once: true });
         });
       }
     }
 
     tryAutoplay();
 
+    // Manual toggle (user can still pause/resume after the auto-play)
     toggleBtn.addEventListener('click', function () {
       if (audio.paused) {
         audio.play().then(function () { reflectState(true); }).catch(function () {});
@@ -174,10 +178,6 @@
   var SNAPCHAT_USERNAME = 'barberrawatalrassam';
   var SNAPCHAT_URL = 'https://www.snapchat.com/add/' + SNAPCHAT_USERNAME;
   var currentLang = 'ar';
-  // selectedPlatform is set by which float button the user clicks:
-  // 'whatsapp' when clicking the green WA button
-  // 'tiktok'   when clicking the black TT button
-  // 'snapchat' when clicking the yellow Snap button
   var selectedPlatform = 'whatsapp';
   var selectedService = null;
   var selectedServiceName = '';
@@ -185,6 +185,53 @@
   var selectedDate = '';
   var selectedTime = '';
   var selectedClientName = '';
+
+  // ── PLATFORM PICKER ────────────────────────────────────────
+  var _platformPickerCb = null;
+
+  function showPlatformPicker(callback) {
+    _platformPickerCb = callback;
+    var overlay = document.getElementById('platformPickerOverlay');
+    if (!overlay) return;
+    // Update labels for current language
+    overlay.querySelectorAll('[data-ar][data-en]').forEach(function(el) {
+      el.textContent = currentLang === 'ar' ? el.getAttribute('data-ar') : el.getAttribute('data-en');
+    });
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePlatformPicker() {
+    var overlay = document.getElementById('platformPickerOverlay');
+    if (!overlay) return;
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+    _platformPickerCb = null;
+  }
+
+  (function initPlatformPicker() {
+    var overlay = document.getElementById('platformPickerOverlay');
+    if (!overlay) return;
+
+    overlay.querySelectorAll('.platform-picker-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var platform = btn.getAttribute('data-platform');
+        closePlatformPicker();
+        if (_platformPickerCb) {
+          var cb = _platformPickerCb;
+          _platformPickerCb = null;
+          setTimeout(function() { cb(platform); }, 180);
+        }
+      });
+    });
+
+    var cancelBtn = document.getElementById('ppCancel');
+    if (cancelBtn) cancelBtn.addEventListener('click', closePlatformPicker);
+
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) closePlatformPicker();
+    });
+  })();
 
   var chatFlow = {
     barber: {
@@ -334,13 +381,13 @@
     openBookingFlow('snapchat');
   });
 
-  // Nav / hero "Book Now" → whatsapp by default (still shows category pick)
+  // Nav / hero "Book Now" → show platform picker first
   document.getElementById('openChatBtn').addEventListener('click', function () {
-    openBookingFlow('whatsapp');
+    showPlatformPicker(function(platform) { openBookingFlow(platform); });
   });
   document.getElementById('bookNowNav').addEventListener('click', function (e) {
     e.preventDefault();
-    openBookingFlow('whatsapp');
+    showPlatformPicker(function(platform) { openBookingFlow(platform); });
   });
   var bookNowMobile = document.getElementById('bookNowMobile');
   if (bookNowMobile) {
@@ -349,16 +396,16 @@
       hamburger.classList.remove('open');
       mobileMenu.classList.remove('open');
       hamburger.setAttribute('aria-expanded', 'false');
-      openBookingFlow('whatsapp');
+      showPlatformPicker(function(platform) { openBookingFlow(platform); });
     });
   }
 
-  // Contact / footer buttons → whatsapp
+  // Contact / footer buttons → show platform picker
   ['whatsappContactLink','footerContactLink','footerWaBtn'].forEach(function (id) {
     var el = document.getElementById(id);
     if (el) el.addEventListener('click', function(e) {
       e.preventDefault();
-      openBookingFlow('whatsapp');
+      showPlatformPicker(function(platform) { openBookingFlow(platform); });
     });
   });
 
@@ -611,22 +658,28 @@
     selectedServiceName = currentLang === 'ar' ? serviceAr : serviceEn;
     selectedServicePrice = price;
 
-    // Default to whatsapp unless already set
-    if (!selectedPlatform) selectedPlatform = 'whatsapp';
-    setChatHeaderPlatform(selectedPlatform);
+    function _doOpenBooking(platform) {
+      selectedPlatform = platform || 'whatsapp';
+      setChatHeaderPlatform(selectedPlatform);
+      chatBody.innerHTML = '';
+      setTimeout(async function () {
+        addBotMsg(
+          '\uD83D\uDC88 ' + serviceAr + ' \u2014 ' + price + ' \u0631\u064A\u0627\u0644\n\u0645\u0627 \u0647\u0648 \u0627\u0633\u0645\u0643 \u0627\u0644\u0643\u0631\u064A\u0645\u061F',
+          '\uD83D\uDC88 ' + serviceEn + ' \u2014 ' + price + ' SAR\nWhat is your name?'
+        );
+        await delay(300);
+        addNameInput();
+      }, 150);
+      openChat();
+    }
 
-    chatBody.innerHTML = '';
-
-    setTimeout(async function () {
-      addBotMsg(
-        '\uD83D\uDC88 ' + serviceAr + ' \u2014 ' + price + ' \u0631\u064A\u0627\u0644\n\u0645\u0627 \u0647\u0648 \u0627\u0633\u0645\u0643 \u0627\u0644\u0643\u0631\u064A\u0645\u061F',
-        '\uD83D\uDC88 ' + serviceEn + ' \u2014 ' + price + ' SAR\nWhat is your name?'
-      );
-      await delay(300);
-      addNameInput();
-    }, 150);
-
-    openChat();
+    // If platform was set via a float button, use it directly
+    // Otherwise show the picker so client can choose
+    if (selectedPlatform && selectedPlatform !== 'whatsapp') {
+      _doOpenBooking(selectedPlatform);
+    } else {
+      showPlatformPicker(function(platform) { _doOpenBooking(platform); });
+    }
   }
 
   document.querySelectorAll('.btn-book-service').forEach(function (btn) {
@@ -1065,6 +1118,10 @@
       sendPaymentTikTok(method);
       return;
     }
+    if (selectedPlatform === 'snapchat') {
+      sendPaymentSnapchat(method);
+      return;
+    }
     var msg = buildPaymentWhatsappMsg(method);
     var url = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(msg);
     setTimeout(function() { window.open(url, '_blank', 'noopener,noreferrer'); }, 300);
@@ -1076,6 +1133,78 @@
     var msg = buildPaymentWhatsappMsg(method);
     [payStepBank, payStepDigital].forEach(function(s){ if(s) s.style.display='none'; });
     showTikTokMessageBox(msg);
+  }
+
+  function sendPaymentSnapchat(method) {
+    var msg = buildPaymentWhatsappMsg(method);
+    [payStepBank, payStepDigital].forEach(function(s){ if(s) s.style.display='none'; });
+    showSnapchatMessageBox(msg);
+  }
+
+  function showSnapchatMessageBox(msg) {
+    if(!payStepSuccess) return;
+    payStepSuccess.style.display = 'block';
+
+    var existing = document.getElementById('snapchatMsgBox');
+    if (existing) existing.remove();
+
+    var box = document.createElement('div');
+    box.id = 'snapchatMsgBox';
+    box.className = 'tiktok-msg-box';
+    box.innerHTML =
+      '<p class="tiktok-msg-instructions">' +
+        (currentLang === 'ar'
+          ? '\uD83D\uDC7B \u0627\u0646\u0633\u062E \u0627\u0644\u0631\u0633\u0627\u0644\u0629 \u0648\u0623\u0631\u0633\u0644\u0647\u0627 \u0639\u0628\u0631 \u0633\u0646\u0627\u0628 \u0634\u0627\u062A \u0644\u062A\u0623\u0643\u064A\u062F \u062D\u062C\u0632\u0643 \u0648\u0625\u0631\u0641\u0627\u0642 \u0635\u0648\u0631\u0629 \u0627\u0644\u0625\u064A\u0635\u0627\u0644:'
+          : '\uD83D\uDC7B Copy the message below and send it via Snapchat to confirm your booking and attach your receipt:') +
+      '</p>' +
+      '<textarea id="snapchatMsgText" class="tiktok-msg-text" readonly dir="auto"></textarea>' +
+      '<div class="tiktok-msg-actions">' +
+        '<button type="button" class="pay-confirm-btn tiktok-copy-btn" id="snapchatCopyBtn">' +
+          (currentLang === 'ar' ? '\uD83D\uDCCB \u0646\u0633\u062E \u0627\u0644\u0631\u0633\u0627\u0644\u0629' : '\uD83D\uDCCB Copy Message') +
+        '</button>' +
+        '<a href="' + SNAPCHAT_URL + '" target="_blank" rel="noopener noreferrer" class="pay-confirm-btn tiktok-open-btn" id="snapchatOpenBtn" style="background:#FFFC00;color:#000;">' +
+          (currentLang === 'ar' ? '\uD83D\uDC7B \u0641\u062A\u062D \u0633\u0646\u0627\u0628 \u0634\u0627\u062A' : '\uD83D\uDC7B Open Snapchat') +
+        '</a>' +
+      '</div>';
+
+    var successBlock = payStepSuccess.querySelector('.pay-success');
+    var doneBtn = document.getElementById('payDoneBtn');
+    if (successBlock && doneBtn) {
+      successBlock.insertBefore(box, doneBtn);
+    } else if (successBlock) {
+      successBlock.appendChild(box);
+    } else {
+      payStepSuccess.appendChild(box);
+    }
+
+    var textarea = document.getElementById('snapchatMsgText');
+    if (textarea) textarea.value = msg;
+
+    var copyBtn = document.getElementById('snapchatCopyBtn');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function() {
+        if (navigator.clipboard && textarea) {
+          navigator.clipboard.writeText(textarea.value).then(function() {
+            copyBtn.textContent = currentLang === 'ar' ? '\u2705 \u062A\u0645 \u0627\u0644\u0646\u0633\u062E' : '\u2705 Copied';
+            setTimeout(function() {
+              copyBtn.textContent = currentLang === 'ar' ? '\uD83D\uDCCB \u0646\u0633\u062E \u0627\u0644\u0631\u0633\u0627\u0644\u0629' : '\uD83D\uDCCB Copy Message';
+            }, 2000);
+          });
+        } else if (textarea) {
+          textarea.select();
+          document.execCommand('copy');
+        }
+      });
+    }
+
+    var openBtn = document.getElementById('snapchatOpenBtn');
+    if (openBtn) {
+      openBtn.addEventListener('click', function() {
+        if (textarea && navigator.clipboard) {
+          navigator.clipboard.writeText(textarea.value).catch(function(){});
+        }
+      });
+    }
   }
 
   function showTikTokMessageBox(msg) {

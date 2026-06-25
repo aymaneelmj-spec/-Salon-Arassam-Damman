@@ -103,8 +103,8 @@
   <style>
   /* ─── ROOT: Warm Wood Palette ─── */
   :root {
-    --bg:          #060402;
-    --bg-2:        #0F0804;
+    --bg:          #100C07;
+    --bg-2:        #170F09;
     --bg-3:        #1A0E06;
     --card:        #1D1008;
     --card-hover:  #28160A;
@@ -571,6 +571,113 @@
   ::-webkit-scrollbar-track { background: var(--bg-2); }
   ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 3px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--gold-dark); }
+
+  /* ─── PLATFORM PICKER BOTTOM SHEET ─── */
+  .platform-picker-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.72);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 10010;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .platform-picker-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .platform-picker-sheet {
+    background: var(--card);
+    border: 1px solid var(--border-light);
+    border-bottom: none;
+    border-radius: 18px 18px 0 0;
+    padding: 1rem 1.4rem 2.5rem;
+    width: 100%;
+    max-width: 500px;
+    transform: translateY(100%);
+    transition: transform 0.38s cubic-bezier(0.16,1,0.3,1);
+    text-align: center;
+  }
+  .platform-picker-overlay.open .platform-picker-sheet {
+    transform: translateY(0);
+  }
+  .platform-picker-handle {
+    width: 44px; height: 4px;
+    background: var(--border-light);
+    border-radius: 2px;
+    margin: 0 auto 1.3rem;
+  }
+  .platform-picker-title {
+    font-family: 'Playfair Display','Cairo',serif;
+    color: var(--text);
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+  .platform-picker-sub {
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-bottom: 1.6rem;
+  }
+  .platform-picker-btns {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+  .platform-picker-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 1rem 0.5rem 0.85rem;
+    border-radius: 14px;
+    border: 1.5px solid var(--border);
+    background: var(--bg-2);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.22s ease;
+    letter-spacing: 0.02em;
+  }
+  .platform-picker-btn .pp-icon {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.22s ease;
+  }
+  .pp-whatsapp .pp-icon { background: #25D366; }
+  .pp-whatsapp:hover, .pp-whatsapp:focus { border-color: #25D366; background: rgba(37,211,102,0.06); }
+  .pp-tiktok .pp-icon { background: #111; border: 1px solid #444; }
+  .pp-tiktok:hover, .pp-tiktok:focus { border-color: #eee; background: rgba(255,255,255,0.04); }
+  .pp-snapchat .pp-icon { background: #FFFC00; }
+  .pp-snapchat:hover, .pp-snapchat:focus { border-color: #FFFC00; background: rgba(255,252,0,0.06); }
+  .platform-picker-btn:hover .pp-icon { transform: scale(1.1); }
+  .platform-picker-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0,0,0,0.45); }
+  .platform-picker-cancel {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 0.5rem;
+  }
+  .platform-picker-cancel:hover { color: var(--text); border-color: var(--border-light); }
   </style>
 </head>
 <body>
@@ -1522,6 +1629,37 @@
   </div>
 </div>
 <!-- ===== END PAYMENT MODAL ===== -->
+
+<!-- ===== PLATFORM PICKER BOTTOM SHEET ===== -->
+<div class="platform-picker-overlay" id="platformPickerOverlay" role="dialog" aria-modal="true" aria-label="اختر وسيلة التواصل">
+  <div class="platform-picker-sheet" id="platformPickerSheet">
+    <div class="platform-picker-handle"></div>
+    <h3 class="platform-picker-title" data-ar="أرسل حجزك عبر" data-en="Send your booking via">أرسل حجزك عبر</h3>
+    <p class="platform-picker-sub" data-ar="اختر التطبيق الذي تفضله للتواصل" data-en="Choose your preferred app to connect">اختر التطبيق الذي تفضله للتواصل</p>
+    <div class="platform-picker-btns">
+      <button type="button" class="platform-picker-btn pp-whatsapp" id="ppWhatsapp" data-platform="whatsapp">
+        <div class="pp-icon">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        </div>
+        <span data-ar="واتساب" data-en="WhatsApp">واتساب</span>
+      </button>
+      <button type="button" class="platform-picker-btn pp-tiktok" id="ppTiktok" data-platform="tiktok">
+        <div class="pp-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.95a8.16 8.16 0 0 0 4.77 1.52V7.02a4.85 4.85 0 0 1-1-.33z"/></svg>
+        </div>
+        <span data-ar="تيك توك" data-en="TikTok">تيك توك</span>
+      </button>
+      <button type="button" class="platform-picker-btn pp-snapchat" id="ppSnapchat" data-platform="snapchat">
+        <div class="pp-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="#111" xmlns="http://www.w3.org/2000/svg"><path d="M12.006 1.999c2.518 0 4.591.918 5.785 2.66.86 1.27 1.027 2.91.957 4.296a.46.46 0 00.22.41c.21.137.59.295 1.04.295.34 0 .68-.077.99-.2a.62.62 0 01.24-.05c.3 0 .58.18.69.46.13.33-.03.7-.36.86-.06.03-.85.42-1.02 1.2-.08.36.03.74.32 1.13.4.54 1.07.87 1.74 1.2.27.13.43.4.42.69-.02.42-.45.7-.83.85-.62.24-1.46.32-1.74.43-.08.16-.13.51-.21.78-.13.46-.59.65-1.16.65-.18 0-.37-.02-.58-.06a3.9 3.9 0 00-.78-.09c-.46 0-.81.16-1.18.34-.74.36-1.58.78-2.97.78h-.07c-1.39 0-2.23-.42-2.97-.78-.37-.18-.72-.34-1.18-.34-.27 0-.52.04-.78.09-.21.04-.4.06-.58.06-.57 0-1.03-.19-1.16-.65-.08-.27-.13-.62-.21-.78-.28-.11-1.12-.19-1.74-.43-.38-.15-.81-.43-.83-.85-.01-.29.15-.56.42-.69.67-.33 1.34-.66 1.74-1.2.29-.39.4-.77.32-1.13-.17-.78-.96-1.17-1.02-1.2-.33-.16-.49-.53-.36-.86.11-.28.39-.46.69-.46a.62.62 0 01.24.05c.31.123.65.2.99.2.39 0 .73-.13.95-.25l.1-.06a.46.46 0 00.22-.41c-.07-1.39.1-3.02.96-4.3 1.2-1.74 3.27-2.66 5.79-2.66z"/></svg>
+        </div>
+        <span data-ar="سناب شات" data-en="Snapchat">سناب شات</span>
+      </button>
+    </div>
+    <button type="button" class="platform-picker-cancel" id="ppCancel" data-ar="إلغاء" data-en="Cancel">إلغاء</button>
+  </div>
+</div>
+<!-- ===== END PLATFORM PICKER ===== -->
 
 <script src="js/main.js" charset="utf-8"></script>
 
