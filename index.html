@@ -542,7 +542,28 @@
     display:flex; align-items:center; transition:all .2s;
   }
   .copy-btn:hover { color:var(--gold); border-color:var(--gold); background:rgba(196,118,40,0.16); }
-  .pay-amount-highlight { background:rgba(196,118,40,0.06); border-radius:3px; padding:.45rem .5rem; margin-top:.2rem; }
+  .pay-amount-highlight {
+    background: rgba(196,118,40,0.09);
+    border: 1px solid rgba(196,118,40,0.28);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    text-align: center;
+  }
+  .pay-amount-highlight .pay-amount {
+    font-size: 1.6rem;
+    letter-spacing: 0.03em;
+  }
+  .pay-amount-label {
+    font-size: 0.74rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
   .pay-digital-steps { margin:1rem 0; }
   .digital-step { display:flex; align-items:flex-start; gap:.7rem; margin-bottom:.7rem; color:var(--text-2); font-size:.83rem; }
   .digital-step-num {
@@ -1553,8 +1574,8 @@
             </button>
           </div>
         </div>
-        <div class="bank-detail-row pay-amount-highlight">
-          <span data-ar="المبلغ المطلوب" data-en="Amount Due">المبلغ المطلوب</span>
+        <div class="pay-amount-highlight">
+          <span class="pay-amount-label" data-ar="المبلغ المطلوب" data-en="Amount Due">المبلغ المطلوب</span>
           <strong class="pay-amount" id="digitalAmount">— <span data-ar="ريال" data-en="SAR">ريال</span></strong>
         </div>
       </div>
@@ -1607,8 +1628,8 @@
             </button>
           </div>
         </div>
-        <div class="bank-detail-row pay-amount-highlight">
-          <span data-ar="المبلغ المطلوب" data-en="Amount Due">المبلغ المطلوب</span>
+        <div class="pay-amount-highlight">
+          <span class="pay-amount-label" data-ar="المبلغ المطلوب" data-en="Amount Due">المبلغ المطلوب</span>
           <strong class="pay-amount" id="ahliAmount">— <span data-ar="ريال" data-en="SAR">ريال</span></strong>
         </div>
       </div>

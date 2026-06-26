@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  // ── BACKGROUND AUDIO — ONE SHOT (no loop) ────────────────
+  // ── BACKGROUND AUDIO — PLAY ON FIRST USER INTERACTION ───────
   (function bgAudio() {
     var audio = document.getElementById('bgAudio');
     var toggleBtn = document.getElementById('soundToggle');
@@ -10,46 +10,51 @@
     var iconOn  = toggleBtn.querySelector('.icon-sound-on');
     var iconOff = toggleBtn.querySelector('.icon-sound-off');
     var audioPlayed = false; // guard: only auto-start once
+    var userMuted   = false; // user explicitly pressed mute
 
-    // Ensure no accidental loop
-    audio.loop = false;
+    audio.loop   = false;
     audio.volume = 0.55;
 
+    // Start: show as "will play" (unmuted icon) — audio hasn't started yet
     function reflectState(isPlaying) {
       toggleBtn.classList.toggle('is-muted', !isPlaying);
       if (iconOn)  iconOn.style.display  = isPlaying ? '' : 'none';
       if (iconOff) iconOff.style.display = isPlaying ? 'none' : '';
     }
 
-    function tryAutoplay() {
-      if (audioPlayed) return;
-      var p = audio.play();
-      if (p && typeof p.then === 'function') {
-        p.then(function () {
-          audioPlayed = true;
-          reflectState(true);
-        }).catch(function () {
-          reflectState(false);
-          // Wait for first real user gesture, then play once
-          function startOnce() {
-            if (audioPlayed) return;
-            audioPlayed = true;
-            audio.play().then(function () { reflectState(true); }).catch(function () {});
-          }
-          document.addEventListener('click',      startOnce, { once: true });
-          document.addEventListener('touchstart', startOnce, { once: true });
-          document.addEventListener('keydown',    startOnce, { once: true });
-        });
-      }
+    // Show unmuted icon from the very start (audio will play on first click)
+    reflectState(true);
+
+    // Play once on first meaningful user gesture — only if user hasn't muted
+    function playOnce() {
+      if (audioPlayed || userMuted) return;
+      audioPlayed = true;
+      audio.play().then(function() {
+        reflectState(true);
+      }).catch(function() {
+        reflectState(false);
+      });
     }
 
-    tryAutoplay();
+    // Hook into first click anywhere on the page (including book buttons)
+    document.addEventListener('click',      playOnce, { once: true });
+    document.addEventListener('touchstart', playOnce, { once: true });
 
-    // Manual toggle (user can still pause/resume after the auto-play)
-    toggleBtn.addEventListener('click', function () {
+    // Manual toggle — let user mute / unmute any time
+    toggleBtn.addEventListener('click', function(e) {
+      e.stopPropagation(); // don't let this click also trigger playOnce
+      if (!audioPlayed) {
+        // First interaction was the mute toggle — user wants silence
+        userMuted = true;
+        audioPlayed = true; // prevent future auto-start
+        reflectState(false);
+        return;
+      }
       if (audio.paused) {
-        audio.play().then(function () { reflectState(true); }).catch(function () {});
+        userMuted = false;
+        audio.play().then(function() { reflectState(true); }).catch(function() {});
       } else {
+        userMuted = true;
         audio.pause();
         reflectState(false);
       }
