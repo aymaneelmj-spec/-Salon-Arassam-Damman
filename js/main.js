@@ -178,7 +178,7 @@
 
   // ───────────────────────────────────────────────────────────
   var PHONE = '966534979996';
-  var TIKTOK_USERNAME = 'barberrawatalrassam';
+  var TIKTOK_USERNAME = 'barberrawatalrassambvh686';
   var TIKTOK_URL = 'https://www.tiktok.com/@' + TIKTOK_USERNAME;
   var SNAPCHAT_USERNAME = 'bvh686';
   var SNAPCHAT_URL = 'https://www.snapchat.com/add/' + SNAPCHAT_USERNAME;
