@@ -78,10 +78,61 @@
     "itemListElement": [
       { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://barberrawatalrassam.com/" },
       { "@type": "ListItem", "position": 2, "name": "خدماتنا", "item": "https://barberrawatalrassam.com/#services" },
-      { "@type": "ListItem", "position": 3, "name": "معرض الصور", "item": "https://barberrawatalrassam.com/#gallery" },
-      { "@type": "ListItem", "position": 4, "name": "تواصل معنا", "item": "https://barberrawatalrassam.com/#contact" }
+      { "@type": "ListItem", "position": 3, "name": "فريقنا", "item": "https://barberrawatalrassam.com/#team" },
+      { "@type": "ListItem", "position": 4, "name": "معرض الصور", "item": "https://barberrawatalrassam.com/#gallery" },
+      { "@type": "ListItem", "position": 5, "name": "تواصل معنا", "item": "https://barberrawatalrassam.com/#contact" }
     ]
   }
+  </script>
+
+  <script type="application/ld+json">
+  [
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "عبدالله",
+      "alternateName": "Abdullah",
+      "jobTitle": "حلاق محترف",
+      "worksFor": { "@type": "HairSalon", "name": "بربر روات الرسام" },
+      "image": "https://barberrawatalrassam.com/gallery/barberNames/1.jpg"
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "عبدالله",
+      "alternateName": "Abdullah",
+      "jobTitle": "حلاق محترف",
+      "worksFor": { "@type": "HairSalon", "name": "بربر روات الرسام" },
+      "image": "https://barberrawatalrassam.com/gallery/barberNames/2.jpg"
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "عزوز",
+      "alternateName": "Azouz",
+      "jobTitle": "حلاق محترف — العرسان والمناسبات",
+      "worksFor": { "@type": "HairSalon", "name": "بربر روات الرسام" },
+      "image": "https://barberrawatalrassam.com/gallery/barberNames/3.jpg"
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "احمد",
+      "alternateName": "Ahmad",
+      "jobTitle": "حلاق محترف — خبير التشكيل والعناية",
+      "worksFor": { "@type": "HairSalon", "name": "بربر روات الرسام" },
+      "image": "https://barberrawatalrassam.com/gallery/barberNames/4.jpg"
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "عداي أبو رغد",
+      "alternateName": "Adai Abu Raghad",
+      "jobTitle": " اختصاص رجال اعمال ومعرسين وكبار الشخصيات صالون بربر روات الرسام ",
+      "worksFor": { "@type": "HairSalon", "name": "بربر روات الرسام" },
+      "image": "https://barberrawatalrassam.com/gallery/barberNames/5.jpg"
+    }
+  ]
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -89,8 +140,8 @@
   <link rel="preload" as="image" href="mainBackground.jpg" fetchpriority="high">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none';">
-  <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob:; connect-src 'self'; frame-ancestors 'none';">
+  <meta http-equiv="X-Frame-Options" content="DENY">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
 
@@ -329,7 +380,7 @@
   .service-card h3 { color: var(--text); font-weight: 700; }
   .service-card p { color: var(--muted); }
   .service-price { color: var(--gold-light); font-weight: 700; font-family:'Playfair Display',serif; }
-  .currency { color: var(--muted); font-size: 0.75em; }
+  .currency { color: var(--muted); font-size: 0.75em; margin-inline-start: 0.25em; }
   .service-badge {
     background: var(--gold);
     color: #060402;
@@ -372,6 +423,7 @@
   .price-row:hover .price-row-name { color: var(--gold-light); }
   .price-row-name { color: var(--text-2); }
   .price-row-amount { color: var(--gold); font-weight: 700; font-family:'Playfair Display',serif; }
+  .price-row-amount .currency { margin-inline-start: 0.25em; }
 
   /* ─── GALLERY ─── */
   .gallery { background: var(--bg-2); }
@@ -452,6 +504,233 @@
   .tiktok-btn:hover   { border-color: #A0B0FF; color: #A0B0FF; }
   .snapchat-btn:hover { border-color: #FFE500; color: #FFE500; }
   .whatsapp-btn:hover { border-color: #25D366; color: #25D366; }
+
+  /* ─── TEAM / BARBERS SECTION ─── */
+  .team { background: var(--bg-3); }
+
+  /* VIP speciality badges row */
+  .team-vip-badges {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    margin: 1.4rem 0 0;
+    padding: 0.85rem 1.2rem;
+    background: rgba(196,118,40,0.06);
+    border: 1px solid rgba(196,118,40,0.18);
+    border-radius: var(--radius-lg);
+  }
+  .tvip-badge {
+    color: var(--gold-light);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+  }
+  .tvip-sep { color: var(--gold-dark); font-size: 0.65rem; }
+
+  /* Grid: 2×2 for 4 barbers */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.6rem;
+    margin-top: 2.4rem;
+  }
+  @media (max-width: 520px) {
+    .team-grid { grid-template-columns: 1fr; }
+  }
+
+  .barber-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    text-align: center;
+    transition: border-color .32s ease, box-shadow .32s ease;
+    position: relative;
+    cursor: default;
+  }
+  .barber-card:hover {
+    border-color: var(--gold);
+    box-shadow: 0 16px 48px rgba(196,118,40,0.22);
+  }
+  .barber-img-wrap {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: var(--bg-2);
+    position: relative;
+  }
+  .barber-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .45s ease;
+  }
+  .barber-card:hover .barber-img-wrap img { transform: scale(1.06); }
+  .barber-img-placeholder {
+    width: 100%;
+    height: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5rem;
+    color: var(--gold-dark);
+    background: linear-gradient(135deg, var(--bg-2), var(--card-hover));
+    position: absolute;
+    inset: 0;
+  }
+  .barber-gold-line {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0;
+    transition: opacity .3s ease;
+  }
+  .barber-card:hover .barber-gold-line { opacity: 1; }
+  .barber-info { padding: 1.1rem 1rem 1.35rem; }
+  .barber-name-ar {
+    font-family: 'Cairo', sans-serif;
+    font-size: 1.12rem;
+    font-weight: 700;
+    color: var(--text);
+    display: block;
+    margin-bottom: .1rem;
+  }
+  .barber-name-en {
+    font-family: 'Playfair Display', serif;
+    font-size: .72rem;
+    letter-spacing: .1em;
+    color: var(--gold);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: .65rem;
+  }
+  /* speciality tags */
+  .barber-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .35rem;
+    margin-bottom: .7rem;
+  }
+  .btag {
+    background: rgba(196,118,40,0.1);
+    border: 1px solid rgba(196,118,40,0.22);
+    color: var(--text-2);
+    font-size: .68rem;
+    padding: .18rem .55rem;
+    border-radius: 2px;
+    letter-spacing: .04em;
+  }
+  .btag--gold {
+    background: rgba(196,118,40,0.18);
+    border-color: rgba(196,118,40,0.45);
+    color: var(--gold-light);
+    font-weight: 600;
+  }
+  .barber-desc {
+    font-size: .78rem;
+    color: var(--muted);
+    line-height: 1.75;
+  }
+  /* hover scissors badge */
+  .barber-scissors {
+    position: absolute;
+    top: .75rem;
+    inset-inline-end: .75rem;
+    width: 22px;
+    height: 22px;
+    color: var(--gold);
+    opacity: 0;
+    transform: rotate(-30deg) scale(.7);
+    transition: all .35s ease;
+    z-index: 2;
+  }
+  .barber-card:hover .barber-scissors { opacity: 1; transform: rotate(0deg) scale(1); }
+  /* scroll reveal */
+  .barber-card.reveal-item {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity .55s ease, transform .55s ease, border-color .32s ease, box-shadow .32s ease;
+  }
+  .barber-card.reveal-item.visible { opacity: 1; transform: translateY(0); }
+  .barber-card.reveal-item:nth-child(1) { transition-delay: .05s; }
+  .barber-card.reveal-item:nth-child(2) { transition-delay: .13s; }
+  .barber-card.reveal-item:nth-child(3) { transition-delay: .21s; }
+  .barber-card.reveal-item:nth-child(4) { transition-delay: .30s; }
+
+  /* ── OWNER CARD (عداي أبو رغد) ── */
+  .owner-card {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 2rem;
+    padding: 1.8rem 2rem;
+    background: linear-gradient(135deg, rgba(196,118,40,0.08) 0%, rgba(196,118,40,0.03) 100%);
+    border: 1px solid rgba(196,118,40,0.35);
+    border-radius: var(--radius-lg);
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity .6s ease .35s, transform .6s ease .35s, border-color .3s ease, box-shadow .3s ease;
+  }
+  .owner-card.visible { opacity: 1; transform: translateY(0); }
+  .owner-card:hover {
+    border-color: var(--gold);
+    box-shadow: 0 12px 40px rgba(196,118,40,0.2);
+  }
+  .owner-card::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+  }
+  .owner-img-wrap {
+    flex-shrink: 0;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid rgba(196,118,40,0.4);
+    background: var(--bg-2);
+    position: relative;
+  }
+  .owner-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+  .owner-img-placeholder {
+    position: absolute; inset: 0;
+    display: none;
+    align-items: center; justify-content: center;
+    font-size: 2.2rem;
+    background: linear-gradient(135deg, var(--bg-2), var(--card-hover));
+  }
+  .owner-text { flex: 1; }
+  .owner-crown { font-size: 1.1rem; margin-bottom: .25rem; }
+  .owner-name {
+    display: block;
+    font-family: 'Cairo', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--gold-light);
+    margin-bottom: .1rem;
+  }
+  .owner-title-en {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-size: .75rem;
+    letter-spacing: .1em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: .7rem;
+  }
+  .owner-tags { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: .65rem; }
+  .owner-desc { font-size: .82rem; color: var(--muted); line-height: 1.75; }
+  @media (max-width: 560px) {
+    .owner-card { flex-direction: column; text-align: center; padding: 1.4rem 1rem; }
+    .owner-tags { justify-content: center; }
+    .owner-card::before { inset-inline-start: 0; inset-inline-end: 0; bottom: auto; width: auto; height: 3px; }
+  }
 
   /* ─── FLOAT BUTTONS ─── */
   .whatsapp-float { background: linear-gradient(135deg,#128C7E,#25D366); box-shadow: 0 4px 18px rgba(37,211,102,0.32); }
@@ -778,6 +1057,7 @@
     </div>
     <nav class="nav-links" id="navLinks" role="navigation" aria-label="القائمة الرئيسية">
       <a href="#services" data-ar="خدماتنا" data-en="Services">خدماتنا</a>
+      <a href="#team" data-ar="فريقنا" data-en="Our Team">فريقنا</a>
       <a href="#pricelist" data-ar="الأسعار" data-en="Prices">الأسعار</a>
       <a href="#gallery" data-ar="معرض الصور" data-en="gallery">معرض الصور</a>
       <a href="#reviews" data-ar="آراء العملاء" data-en="Reviews">آراء العملاء</a>
@@ -793,6 +1073,7 @@
   </div>
   <div class="mobile-menu" id="mobileMenu" role="navigation" aria-label="القائمة المتنقلة">
     <a href="#services" data-ar="خدماتنا" data-en="Services">خدماتنا</a>
+    <a href="#team" data-ar="فريقنا" data-en="Our Team">فريقنا</a>
     <a href="#pricelist" data-ar="الأسعار" data-en="Prices">الأسعار</a>
     <a href="#gallery" data-ar="معرض الصور" data-en="gallery">معرض الصور</a>
     <a href="#reviews" data-ar="آراء العملاء" data-en="Reviews">آراء العملاء</a>
@@ -895,6 +1176,189 @@
     </div>
   </div>
 </section>
+
+<!-- ===== TEAM / BARBERS SECTION ===== -->
+<section class="team reveal-section" id="team">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-eyebrow" data-ar="فريق الحلاقين" data-en="Our Barbers">فريق الحلاقين</p>
+      <h2 data-ar="خبراء يستقبلون كبار الشخصيات" data-en="Masters for VIPs, Business Men &amp; Grooms">خبراء يستقبلون كبار الشخصيات</h2>
+      <p class="section-desc"
+         data-ar="متخصصون في خدمة رجال الأعمال، المعرسين، وكبار الشخصيات — كل حلاق يقدم تجربة حلاقة فريدة على أعلى مستوى"
+         data-en="Specialists in serving businessmen, grooms, and VIP clients — each barber delivers a uniquely elevated experience">متخصصون في خدمة رجال الأعمال، المعرسين، وكبار الشخصيات — كل حلاق يقدم تجربة حلاقة فريدة على أعلى مستوى</p>
+    </div>
+
+    <!-- VIP speciality badge row -->
+    <div class="team-vip-badges" aria-hidden="true">
+      <span class="tvip-badge" data-ar="رجال الأعمال" data-en="Business Men">👔 رجال الأعمال</span>
+      <span class="tvip-sep">✦</span>
+      <span class="tvip-badge" data-ar="العرسان" data-en="Grooms">🎩 العرسان</span>
+      <span class="tvip-sep">✦</span>
+      <span class="tvip-badge" data-ar="كبار الشخصيات" data-en="VIP Clients">👑 كبار الشخصيات</span>
+    </div>
+
+    <div class="team-grid">
+
+      <!-- ── 1: عبدالله (الأول) ── -->
+      <div class="barber-card reveal-item" itemscope itemtype="https://schema.org/Person">
+        <meta itemprop="jobTitle" content="حلاق محترف">
+        <meta itemprop="worksFor" content="بربر روات الرسام">
+        <svg class="barber-scissors" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="6" cy="6" r="3" stroke="currentColor" stroke-width="1.8" fill="none"/>
+          <circle cx="6" cy="18" r="3" stroke="currentColor" stroke-width="1.8" fill="none"/>
+          <line x1="8.5" y1="8.5" x2="20" y2="20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="8.5" y1="15.5" x2="20" y2="4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        <div class="barber-img-wrap">
+          <picture>
+            <source srcset="gallery/barberNames/1.webp" type="image/webp">
+            <source srcset="gallery/barberNames/1.avif" type="image/avif">
+            <img src="gallery/barberNames/1.jpg" alt="عبدالله - حلاق محترف في بربر روات الرسام"
+                 itemprop="image" loading="lazy" width="400" height="400"
+                 onerror="this.style.display='none';this.closest('.barber-img-wrap').querySelector('.barber-img-placeholder').style.display='flex'">
+          </picture>
+          <div class="barber-img-placeholder" style="display:none;" aria-hidden="true">✂</div>
+        </div>
+        <div class="barber-gold-line"></div>
+        <div class="barber-info">
+          <span class="barber-name-ar" itemprop="name">عبدالله</span>
+          <span class="barber-name-en" data-ar="حلاق محترف" data-en="Abdullah — Master Barber">Abdullah — Master Barber</span>
+          <div class="barber-tags">
+            <span class="btag" data-ar="حلاقة VIP" data-en="VIP Cuts">✂ حلاقة VIP</span>
+            <span class="btag" data-ar="تشكيل لحية" data-en="Beard Shaping">🪒 تشكيل لحية</span>
+          </div>
+          <p class="barber-desc" data-ar="دقة عالية في القصات الكلاسيكية والعصرية، يترك كل عميل بإطلالة تليق بشخصيته." data-en="High precision in classic and modern cuts — every client leaves looking their best.">دقة عالية في القصات الكلاسيكية والعصرية، يترك كل عميل بإطلالة تليق بشخصيته.</p>
+        </div>
+      </div>
+
+      <!-- ── 2: عبدالله (الثاني) ── -->
+      <div class="barber-card reveal-item" itemscope itemtype="https://schema.org/Person">
+        <meta itemprop="jobTitle" content="حلاق محترف">
+        <meta itemprop="worksFor" content="بربر روات الرسام">
+        <svg class="barber-scissors" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="6" cy="6" r="3" stroke="currentColor" stroke-width="1.8" fill="none"/>
+          <circle cx="6" cy="18" r="3" stroke="currentColor" stroke-width="1.8" fill="none"/>
+          <line x1="8.5" y1="8.5" x2="20" y2="20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="8.5" y1="15.5" x2="20" y2="4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        <div class="barber-img-wrap">
+          <picture>
+            <source srcset="gallery/barberNames/2.webp" type="image/webp">
+            <source srcset="gallery/barberNames/2.avif" type="image/avif">
+            <img src="gallery/barberNames/2.jpg" alt="عبدالله - حلاق محترف في بربر روات الرسام"
+                 itemprop="image" loading="lazy" width="400" height="400"
+                 onerror="this.style.display='none';this.closest('.barber-img-wrap').querySelector('.barber-img-placeholder').style.display='flex'">
+          </picture>
+          <div class="barber-img-placeholder" style="display:none;" aria-hidden="true">✂</div>
+        </div>
+        <div class="barber-gold-line"></div>
+        <div class="barber-info">
+          <span class="barber-name-ar" itemprop="name">عبدالله</span>
+          <span class="barber-name-en" data-ar="حلاق محترف" data-en="Abdullah — Senior Barber">Abdullah — Senior Barber</span>
+          <div class="barber-tags">
+            <span class="btag" data-ar="قصات عصرية" data-en="Modern Cuts">💈 قصات عصرية</span>
+            <span class="btag" data-ar="عناية بشرة" data-en="Skin Care">✨ عناية بشرة</span>
+          </div>
+          <p class="barber-desc" data-ar="متخصص في القصات العصرية وعناية الوجه، أسلوبه الهادئ يجعل كل زيارة تجربة ممتعة." data-en="Specializes in modern cuts and facial care — his calm approach makes every visit an enjoyable experience.">متخصص في القصات العصرية وعناية الوجه، أسلوبه الهادئ يجعل كل زيارة تجربة ممتعة.</p>
+        </div>
+      </div>
+
+      <!-- ── 3: عزوز ── -->
+      <div class="barber-card reveal-item" itemscope itemtype="https://schema.org/Person">
+        <meta itemprop="jobTitle" content="حلاق محترف — العرسان والمناسبات">
+        <meta itemprop="worksFor" content="بربر روات الرسام">
+        <svg class="barber-scissors" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="6" cy="6" r="3" stroke="currentColor" stroke-width="1.8" fill="none"/>
+          <circle cx="6" cy="18" r="3" stroke="currentColor" stroke-width="1.8" fill="none"/>
+          <line x1="8.5" y1="8.5" x2="20" y2="20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="8.5" y1="15.5" x2="20" y2="4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        <div class="barber-img-wrap">
+          <picture>
+            <source srcset="gallery/barberNames/3.webp" type="image/webp">
+            <source srcset="gallery/barberNames/3.avif" type="image/avif">
+            <img src="gallery/barberNames/3.jpg" alt="عزوز - حلاق العرسان في بربر روات الرسام"
+                 itemprop="image" loading="lazy" width="400" height="400"
+                 onerror="this.style.display='none';this.closest('.barber-img-wrap').querySelector('.barber-img-placeholder').style.display='flex'">
+          </picture>
+          <div class="barber-img-placeholder" style="display:none;" aria-hidden="true">✂</div>
+        </div>
+        <div class="barber-gold-line"></div>
+        <div class="barber-info">
+          <span class="barber-name-ar" itemprop="name">عزوز</span>
+          <span class="barber-name-en" data-ar="خبير العرسان والمناسبات" data-en="Azouz — Groom &amp; Events Expert">Azouz — Groom &amp; Events Expert</span>
+          <div class="barber-tags">
+            <span class="btag" data-ar="العرسان" data-en="Grooms">🎩 العرسان</span>
+            <span class="btag" data-ar="مناسبات كبرى" data-en="Big Events">🥂 مناسبات</span>
+          </div>
+          <p class="barber-desc" data-ar="الخيار الأول لتجهيز العرسان والمناسبات الكبرى — يضمن إطلالة مثالية لا تُنسى في أهم يوم." data-en="Top choice for groom prep and major events — guarantees a flawless, unforgettable look on the big day.">الخيار الأول لتجهيز العرسان والمناسبات الكبرى — يضمن إطلالة مثالية لا تُنسى في أهم يوم.</p>
+        </div>
+      </div>
+
+      <!-- ── 4: احمد ── -->
+      <div class="barber-card reveal-item" itemscope itemtype="https://schema.org/Person">
+        <meta itemprop="jobTitle" content="حلاق محترف — خبير التشكيل">
+        <meta itemprop="worksFor" content="بربر روات الرسام">
+        <svg class="barber-scissors" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="6" cy="6" r="3" stroke="currentColor" stroke-width="1.8" fill="none"/>
+          <circle cx="6" cy="18" r="3" stroke="currentColor" stroke-width="1.8" fill="none"/>
+          <line x1="8.5" y1="8.5" x2="20" y2="20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="8.5" y1="15.5" x2="20" y2="4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        <div class="barber-img-wrap">
+          <picture>
+            <source srcset="gallery/barberNames/4.webp" type="image/webp">
+            <source srcset="gallery/barberNames/4.avif" type="image/avif">
+            <img src="gallery/barberNames/4.jpg" alt="احمد - حلاق خبير في بربر روات الرسام"
+                 itemprop="image" loading="lazy" width="400" height="400"
+                 onerror="this.style.display='none';this.closest('.barber-img-wrap').querySelector('.barber-img-placeholder').style.display='flex'">
+          </picture>
+          <div class="barber-img-placeholder" style="display:none;" aria-hidden="true">✂</div>
+        </div>
+        <div class="barber-gold-line"></div>
+        <div class="barber-info">
+          <span class="barber-name-ar" itemprop="name">احمد</span>
+          <span class="barber-name-en" data-ar="خبير التشكيل والعناية" data-en="Ahmad — Style &amp; Grooming Expert">Ahmad — Style &amp; Grooming Expert</span>
+          <div class="barber-tags">
+            <span class="btag" data-ar="تشكيل لحية" data-en="Beard Shaping">🪒 تشكيل لحية</span>
+            <span class="btag" data-ar="عناية بشرة" data-en="Skin Care">✨ عناية بشرة</span>
+          </div>
+          <p class="barber-desc" data-ar="خبير في تشكيل اللحية والعناية بالبشرة، لمساته الدقيقة تعكس ذوق راقٍ يناسب كل مناسبة." data-en="Expert in beard shaping and skin care — his precise touch reflects refined taste for every occasion.">خبير في تشكيل اللحية والعناية بالبشرة، لمساته الدقيقة تعكس ذوق راقٍ يناسب كل مناسبة.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── صاحب العمل: عداي أبو رغد ── OWNER CARD (full width, gold treatment) -->
+    <div class="owner-card reveal-item" itemscope itemtype="https://schema.org/Person">
+      <meta itemprop="jobTitle" content="صاحب صالون بربر روات الرسام">
+      <div class="owner-img-wrap">
+        <picture>
+          <source srcset="gallery/barberNames/5.webp" type="image/webp">
+          <source srcset="gallery/barberNames/5.avif" type="image/avif">
+          <img src="gallery/barberNames/5.jpg" alt="عداي أبو رغد - صاحب بربر روات الرسام"
+               itemprop="image" loading="lazy" width="160" height="160"
+               onerror="this.style.display='none';this.closest('.owner-img-wrap').querySelector('.owner-img-placeholder').style.display='flex'">
+        </picture>
+        <div class="owner-img-placeholder" style="display:none;" aria-hidden="true">👑</div>
+      </div>
+      <div class="owner-text">
+        <div class="owner-crown" aria-hidden="true">👑</div>
+        <span class="owner-name" itemprop="name">عداي أبو رغد</span>
+        <span class="owner-title-en" data-ar="صاحب الصالون" data-en="Adai Abu Raghad — Salon Owner &amp; Host">Adai Abu Raghad — Salon Owner &amp; Host</span>
+        <div class="owner-tags">
+          <span class="btag btag--gold" data-ar="رجال الأعمال" data-en="Business Men">👔 رجال الأعمال</span>
+          <span class="btag btag--gold" data-ar="حفلات وأطراف" data-en="Parties &amp; Events">🥂 حفلات وأطراف</span>
+          <span class="btag btag--gold" data-ar="كبار الشخصيات" data-en="VIP Clients">👑 كبار الشخصيات</span>
+        </div>
+        <p class="owner-desc"
+           data-ar="صاحب الصالون والمضيف الأول لكبار الشخصيات ورجال الأعمال والأطراف الخاصة. يحرص شخصيًا على أن تكون كل زيارة تجربة استثنائية بمستوى المقام."
+           data-en="Salon owner and premier host for VIPs, businessmen, and private events. Personally ensures every visit is an exceptional experience befitting the occasion.">صاحب الصالون والمضيف الأول لكبار الشخصيات ورجال الأعمال والأطراف الخاصة. يحرص شخصيًا على أن تكون كل زيارة تجربة استثنائية بمستوى المقام.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ===== END TEAM SECTION ===== -->
 
 <section class="services reveal-section" id="services">
   <div class="container">
@@ -1426,13 +1890,14 @@
     <p class="footer-tagline" data-ar="صالون حلاقة احترافي • حي بدر، الدمام" data-en="Professional Barbershop • Badr, Dammam">صالون حلاقة احترافي &bull; حي بدر، الدمام</p>
     <div class="footer-links">
       <a href="#services" data-ar="الخدمات" data-en="Services">الخدمات</a>
+      <a href="#team" data-ar="فريقنا" data-en="Our Team">فريقنا</a>
       <a href="#pricelist" data-ar="الأسعار" data-en="Prices">الأسعار</a>
       <a href="#gallery" data-ar="الصور" data-en="gallery">الصور</a>
       <a href="#reviews" data-ar="التقييمات" data-en="Reviews">التقييمات</a>
       <button type="button" id="footerContactLink" data-ar="التواصل" data-en="Contact">التواصل</button>
     </div>
     <div class="footer-socials">
-      <a href="https://www.tiktok.com/@bvh686" target="_blank" rel="noopener noreferrer" class="social-btn tiktok-btn" aria-label="TikTok">
+      <a href="https://www.tiktok.com/@barberrawatalrassam" target="_blank" rel="noopener noreferrer" class="social-btn tiktok-btn" aria-label="TikTok">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.95a8.16 8.16 0 0 0 4.77 1.52V7.02a4.85 4.85 0 0 1-1-.33z"/></svg>
         <span>TikTok</span>
       </a>
