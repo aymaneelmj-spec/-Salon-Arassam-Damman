@@ -505,81 +505,95 @@
   .snapchat-btn:hover { border-color: #FFE500; color: #FFE500; }
   .whatsapp-btn:hover { border-color: #25D366; color: #25D366; }
 
-  /* ─── TEAM / BARBERS SECTION ─── */
+  /* ═══════════════════════════════════════
+     TEAM / BARBERS SECTION
+     ═══════════════════════════════════════ */
   .team { background: var(--bg-3); }
 
-  /* VIP speciality badges row */
+  /* VIP badge row */
   .team-vip-badges {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.8rem;
-    flex-wrap: wrap;
-    margin: 1.4rem 0 0;
-    padding: 0.85rem 1.2rem;
+    display: flex; align-items: center; justify-content: center;
+    gap: .8rem; flex-wrap: wrap;
+    margin: 1.4rem 0 0; padding: .85rem 1.2rem;
     background: rgba(196,118,40,0.06);
     border: 1px solid rgba(196,118,40,0.18);
     border-radius: var(--radius-lg);
   }
-  .tvip-badge {
-    color: var(--gold-light);
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-  }
-  .tvip-sep { color: var(--gold-dark); font-size: 0.65rem; }
+  .tvip-badge { color: var(--gold-light); font-size: .8rem; font-weight: 600; letter-spacing: .06em; }
+  .tvip-sep   { color: var(--gold-dark); font-size: .65rem; }
 
-  /* Grid: 2×2 for 4 barbers */
+  /* 2×2 grid */
   .team-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1.6rem;
     margin-top: 2.4rem;
   }
-  @media (max-width: 520px) {
-    .team-grid { grid-template-columns: 1fr; }
-  }
+  @media (max-width: 540px) { .team-grid { grid-template-columns: 1fr; } }
 
+  /* ── barber card ── */
   .barber-card {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     overflow: hidden;
     text-align: center;
-    transition: border-color .32s ease, box-shadow .32s ease;
     position: relative;
     cursor: default;
+    /* reveal start state */
+    opacity: 0;
+    transform: translateY(30px);
+    transition:
+      opacity   .55s ease,
+      transform .55s ease,
+      border-color .3s ease,
+      box-shadow   .3s ease;
   }
+  .barber-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .barber-card:nth-child(1) { transition-delay: .05s; }
+  .barber-card:nth-child(2) { transition-delay: .14s; }
+  .barber-card:nth-child(3) { transition-delay: .23s; }
+  .barber-card:nth-child(4) { transition-delay: .32s; }
   .barber-card:hover {
     border-color: var(--gold);
     box-shadow: 0 16px 48px rgba(196,118,40,0.22);
   }
+
+  /* ── image area ──
+     Placeholder is the background layer (always visible).
+     Photo sits on top; when it breaks, JS adds .broken → display:none.  */
   .barber-img-wrap {
     width: 100%;
     aspect-ratio: 1 / 1;
     overflow: hidden;
-    background: var(--bg-2);
     position: relative;
+    background: linear-gradient(135deg, var(--bg-2), var(--card-hover));
   }
-  .barber-img-wrap img {
-    width: 100%;
-    height: 100%;
+  .barber-img-placeholder {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3.8rem;
+    color: var(--gold-dark);
+    pointer-events: none;
+    z-index: 0;
+    user-select: none;
+  }
+  .barber-photo {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
     object-fit: cover;
+    object-position: center top;
+    display: block;
+    z-index: 1;
     transition: transform .45s ease;
   }
-  .barber-card:hover .barber-img-wrap img { transform: scale(1.06); }
-  .barber-img-placeholder {
-    width: 100%;
-    height: 100%;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    font-size: 3.5rem;
-    color: var(--gold-dark);
-    background: linear-gradient(135deg, var(--bg-2), var(--card-hover));
-    position: absolute;
-    inset: 0;
-  }
+  .barber-photo.broken { display: none; }
+  .barber-card:hover .barber-photo { transform: scale(1.06); }
+
+  /* gold shimmer line on hover */
   .barber-gold-line {
     height: 2px;
     background: linear-gradient(90deg, transparent, var(--gold), transparent);
@@ -587,149 +601,103 @@
     transition: opacity .3s ease;
   }
   .barber-card:hover .barber-gold-line { opacity: 1; }
+
+  /* info block */
   .barber-info { padding: 1.1rem 1rem 1.35rem; }
   .barber-name-ar {
     font-family: 'Cairo', sans-serif;
-    font-size: 1.12rem;
-    font-weight: 700;
-    color: var(--text);
-    display: block;
-    margin-bottom: .1rem;
+    font-size: 1.12rem; font-weight: 700;
+    color: var(--text); display: block; margin-bottom: .1rem;
   }
   .barber-name-en {
     font-family: 'Playfair Display', serif;
-    font-size: .72rem;
-    letter-spacing: .1em;
-    color: var(--gold);
-    text-transform: uppercase;
-    display: block;
-    margin-bottom: .65rem;
+    font-size: .72rem; letter-spacing: .1em;
+    color: var(--gold); text-transform: uppercase;
+    display: block; margin-bottom: .65rem;
   }
-  /* speciality tags */
   .barber-tags {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: .35rem;
-    margin-bottom: .7rem;
+    display: flex; flex-wrap: wrap; justify-content: center;
+    gap: .35rem; margin-bottom: .7rem;
   }
   .btag {
     background: rgba(196,118,40,0.1);
     border: 1px solid rgba(196,118,40,0.22);
-    color: var(--text-2);
-    font-size: .68rem;
-    padding: .18rem .55rem;
-    border-radius: 2px;
-    letter-spacing: .04em;
+    color: var(--text-2); font-size: .68rem;
+    padding: .18rem .55rem; border-radius: 2px; letter-spacing: .04em;
   }
   .btag--gold {
     background: rgba(196,118,40,0.18);
     border-color: rgba(196,118,40,0.45);
-    color: var(--gold-light);
-    font-weight: 600;
+    color: var(--gold-light); font-weight: 600;
   }
-  .barber-desc {
-    font-size: .78rem;
-    color: var(--muted);
-    line-height: 1.75;
-  }
-  /* hover scissors badge */
+  .barber-desc { font-size: .78rem; color: var(--muted); line-height: 1.75; }
+
+  /* scissors icon on hover */
   .barber-scissors {
-    position: absolute;
-    top: .75rem;
-    inset-inline-end: .75rem;
-    width: 22px;
-    height: 22px;
-    color: var(--gold);
-    opacity: 0;
-    transform: rotate(-30deg) scale(.7);
+    position: absolute; top: .75rem; inset-inline-end: .75rem;
+    width: 22px; height: 22px;
+    color: var(--gold); z-index: 3;
+    opacity: 0; transform: rotate(-30deg) scale(.7);
     transition: all .35s ease;
-    z-index: 2;
   }
   .barber-card:hover .barber-scissors { opacity: 1; transform: rotate(0deg) scale(1); }
-  /* scroll reveal */
-  .barber-card.reveal-item {
-    opacity: 0;
-    transform: translateY(28px);
-    transition: opacity .55s ease, transform .55s ease, border-color .32s ease, box-shadow .32s ease;
-  }
-  .barber-card.reveal-item.visible { opacity: 1; transform: translateY(0); }
-  .barber-card.reveal-item:nth-child(1) { transition-delay: .05s; }
-  .barber-card.reveal-item:nth-child(2) { transition-delay: .13s; }
-  .barber-card.reveal-item:nth-child(3) { transition-delay: .21s; }
-  .barber-card.reveal-item:nth-child(4) { transition-delay: .30s; }
 
   /* ── OWNER CARD (عداي أبو رغد) ── */
   .owner-card {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    margin-top: 2rem;
-    padding: 1.8rem 2rem;
+    display: flex; align-items: center; gap: 2rem;
+    margin-top: 2rem; padding: 1.8rem 2rem;
     background: linear-gradient(135deg, rgba(196,118,40,0.08) 0%, rgba(196,118,40,0.03) 100%);
     border: 1px solid rgba(196,118,40,0.35);
     border-radius: var(--radius-lg);
-    position: relative;
-    overflow: hidden;
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity .6s ease .35s, transform .6s ease .35s, border-color .3s ease, box-shadow .3s ease;
+    position: relative; overflow: hidden;
+    /* reveal start */
+    opacity: 0; transform: translateY(24px);
+    transition: opacity .6s ease .38s, transform .6s ease .38s,
+                border-color .3s ease, box-shadow .3s ease;
   }
   .owner-card.visible { opacity: 1; transform: translateY(0); }
-  .owner-card:hover {
-    border-color: var(--gold);
-    box-shadow: 0 12px 40px rgba(196,118,40,0.2);
-  }
+  .owner-card:hover { border-color: var(--gold); box-shadow: 0 12px 40px rgba(196,118,40,0.2); }
   .owner-card::before {
-    content: '';
-    position: absolute;
-    inset-inline-start: 0; top: 0; bottom: 0;
-    width: 3px;
+    content: ''; position: absolute;
+    inset-inline-start: 0; top: 0; bottom: 0; width: 3px;
     background: linear-gradient(to bottom, transparent, var(--gold), transparent);
   }
   .owner-img-wrap {
-    flex-shrink: 0;
-    width: 110px;
-    height: 110px;
-    border-radius: 50%;
-    overflow: hidden;
+    flex-shrink: 0; width: 110px; height: 110px;
+    border-radius: 50%; overflow: hidden;
     border: 2px solid rgba(196,118,40,0.4);
-    background: var(--bg-2);
+    background: linear-gradient(135deg, var(--bg-2), var(--card-hover));
     position: relative;
   }
-  .owner-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+  .owner-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center top;
+    display: block; position: relative; z-index: 1;
+  }
+  .owner-img-wrap img.broken { display: none; }
   .owner-img-placeholder {
-    position: absolute; inset: 0;
-    display: none;
-    align-items: center; justify-content: center;
+    position: absolute; inset: 0; z-index: 0;
+    display: flex; align-items: center; justify-content: center;
     font-size: 2.2rem;
-    background: linear-gradient(135deg, var(--bg-2), var(--card-hover));
   }
   .owner-text { flex: 1; }
   .owner-crown { font-size: 1.1rem; margin-bottom: .25rem; }
   .owner-name {
-    display: block;
-    font-family: 'Cairo', sans-serif;
-    font-size: 1.3rem;
-    font-weight: 800;
-    color: var(--gold-light);
-    margin-bottom: .1rem;
+    display: block; font-family: 'Cairo', sans-serif;
+    font-size: 1.3rem; font-weight: 800;
+    color: var(--gold-light); margin-bottom: .1rem;
   }
   .owner-title-en {
-    display: block;
-    font-family: 'Playfair Display', serif;
-    font-size: .75rem;
-    letter-spacing: .1em;
-    color: var(--gold);
-    text-transform: uppercase;
-    margin-bottom: .7rem;
+    display: block; font-family: 'Playfair Display', serif;
+    font-size: .75rem; letter-spacing: .1em;
+    color: var(--gold); text-transform: uppercase; margin-bottom: .7rem;
   }
   .owner-tags { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: .65rem; }
   .owner-desc { font-size: .82rem; color: var(--muted); line-height: 1.75; }
   @media (max-width: 560px) {
     .owner-card { flex-direction: column; text-align: center; padding: 1.4rem 1rem; }
     .owner-tags { justify-content: center; }
-    .owner-card::before { inset-inline-start: 0; inset-inline-end: 0; bottom: auto; width: auto; height: 3px; }
+    .owner-card::before { inset-inline-start:0; inset-inline-end:0; bottom:auto; width:auto; height:3px; }
   }
 
   /* ─── FLOAT BUTTONS ─── */
